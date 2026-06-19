@@ -11,8 +11,8 @@
     <style>
         :root {
             --primary: #10b981; /* Football Green */
-            --secondary: #059669; 
-            --pitch-bg: linear-gradient(135deg, #115e59 0%, #047857 50%, #065f46 100%);
+            --secondary: #047857; 
+            --pitch-bg: linear-gradient(135deg, #022c22 0%, #059669 40%, #10b981 70%, #047857 100%);
             --card-bg: #ffffff; /* Clean White Boxes */
             --text-dark: #0f172a;
             --text-muted: #475569;
@@ -31,18 +31,37 @@
             min-height: 100vh;
             padding: 20px;
             overflow-x: hidden;
+            position: relative;
         }
 
+        /* High Density Stadium Vibes Overlay */
         body::before {
-            content: "⚽ ✨ 🏆 🎉 🏟️ 🌟";
+            content: "⚽ ✨ 🏟️ 🏆 ⚽ 🎉 🌟 ⚽ 🏟️ 🏆 ⚽ ✨ 🏟️ 🏆 ⚽ 🎉 🌟 ⚽ 🏟️ 🏆";
             position: fixed;
             top: -10px;
             left: 0;
             width: 100%;
-            font-size: 24px;
-            letter-spacing: 2rem;
+            font-size: 26px;
+            letter-spacing: 1.5rem;
             text-align: center;
-            opacity: 0.2;
+            opacity: 0.25;
+            pointer-events: none;
+            white-space: nowrap;
+            line-height: 2;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        /* Second Layer of Background Elements for extra depth */
+        body::after {
+            content: "⚽ ✨ 🏟️ 🏆 ⚽ 🎉 🌟 ⚽ 🏟️ 🏆 ⚽ ✨ 🏟️ 🏆 ⚽ 🎉 🌟 ⚽ 🏟️ 🏆";
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            font-size: 22px;
+            letter-spacing: 1.8rem;
+            text-align: center;
+            opacity: 0.15;
             pointer-events: none;
             white-space: nowrap;
         }
@@ -51,6 +70,8 @@
             text-align: center;
             margin: 40px auto;
             max-width: 900px;
+            position: relative;
+            z-index: 10;
         }
 
         h1 {
@@ -62,16 +83,17 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             margin-bottom: 5px;
-            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            text-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
 
         p.subtitle {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             color: #fef08a;
             font-weight: 800;
             text-transform: lowercase;
             font-style: italic;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+            letter-spacing: 1px;
         }
 
         /* Responsive 3-Column Layout */
@@ -81,6 +103,8 @@
             display: grid;
             grid-template-columns: 1fr;
             gap: 25px;
+            position: relative;
+            z-index: 10;
         }
 
         @media (min-width: 1200px) {
@@ -92,10 +116,10 @@
         /* Pitch White Cards */
         .card {
             background: var(--card-bg);
-            border: 3px solid #fef08a;
+            border: 4px solid #fef08a; /* Enhanced Golden boundary outline */
             border-radius: 24px;
             padding: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.35);
             max-height: 82vh;
             display: flex;
             flex-direction: column;
@@ -109,7 +133,7 @@
             gap: 10px;
             border-bottom: 3px solid #f0fdf4;
             padding-bottom: 10px;
-            color: var(--secondary);
+            color: #047857;
             flex-shrink: 0;
         }
 
@@ -122,7 +146,7 @@
         /* Clean Scrollbars */
         .scrollable-content::-webkit-scrollbar { width: 6px; }
         .scrollable-content::-webkit-scrollbar-track { background: #f1f5f9; }
-        .scrollable-content::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+        .scrollable-content::-webkit-scrollbar-thumb { background: #10b981; border-radius: 10px; }
 
         /* General List Item Layout */
         .list-item {
@@ -178,7 +202,7 @@
 
         .points-badge {
             font-weight: 800;
-            color: var(--secondary);
+            color: #047857;
             font-size: 1.1rem;
         }
 
@@ -419,14 +443,12 @@
                 matchesContainer.innerHTML += matchHtml;
             });
 
-            // Map and Sort Leaderboard
             const allTeams = Object.keys(teamAssignments).map(key => ({
                 country: key,
                 points: pointsTable[key] || 0,
                 ...teamAssignments[key]
             }));
 
-            // Render Leaderboard (Sorted by Points)
             const sortedLeaderboard = [...allTeams].sort((a, b) => b.points - a.points);
             sortedLeaderboard.forEach((team, index) => {
                 const leaderHtml = `
@@ -444,7 +466,6 @@
                 leaderboardContainer.innerHTML += leaderHtml;
             });
 
-            // Render Office Directory (Sorted Alphabetically by Employee Name)
             const sortedDirectory = [...allTeams].sort((a, b) => a.employee.localeCompare(b.employee));
             sortedDirectory.forEach(team => {
                 const directoryHtml = `
