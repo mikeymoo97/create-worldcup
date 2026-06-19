@@ -81,7 +81,9 @@ jobs:
 
           replacement = f'// --- ROBOT LIVE DATA INSERTION POINT ---\n        const matches = {json.dumps(formatted_matches, indent=8)};\n        // --- END ROBOT LIVE DATA ---'
           pattern = r'// --- ROBOT LIVE DATA INSERTION POINT ---.*?// --- END ROBOT LIVE DATA ---'
-          new_html = re.sub(pattern, replacement, html, flags=re.DOTALL)
+          
+          # Using a lambda function here fixes the 'bad escape' error entirely!
+          new_html = re.sub(pattern, lambda m: replacement, html, flags=re.DOTALL)
 
           with open('index.html', 'w') as f:
               f.write(new_html)
