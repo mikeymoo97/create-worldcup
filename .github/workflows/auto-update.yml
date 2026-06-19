@@ -72,7 +72,8 @@ jobs:
                   'homeScore': int(home_score),
                   'awayScore': int(away_score),
                   'status': status,
-                  'time': time_label
+                  'time': time_label,
+                  'utcDate': m.get('utcDate', '')
               })
 
           # Inject parsed results array straight into your index.html
@@ -82,7 +83,6 @@ jobs:
           replacement = f'// --- ROBOT LIVE DATA INSERTION POINT ---\n        const matches = {json.dumps(formatted_matches, indent=8)};\n        // --- END ROBOT LIVE DATA ---'
           pattern = r'// --- ROBOT LIVE DATA INSERTION POINT ---.*?// --- END ROBOT LIVE DATA ---'
           
-          # Using a lambda function here fixes the 'bad escape' error entirely!
           new_html = re.sub(pattern, lambda m: replacement, html, flags=re.DOTALL)
 
           with open('index.html', 'w') as f:
@@ -94,5 +94,5 @@ jobs:
           git config --global user.name "CreateBot"
           git config --global user.email "bot@createadvertising.com"
           git add index.html
-          git commit -m "⚽ Robot successfully synced actual tournament data!" || exit 0
+          git commit -m "⚽ Robot successfully synced tournament match dates!" || exit 0
           git push
