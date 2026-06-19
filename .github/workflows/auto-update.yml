@@ -1,0 +1,75 @@
+name: ⚽ Auto Update World Cup Scores
+on:
+  schedule:
+    - cron: '0 * * * *' # Wakes up automatically every hour
+  workflow_dispatch: # Gives you a "Run Now" button to trigger it manually
+
+jobs:
+  update-scores:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Gives the robot permission to update your website
+    steps:
+      - name: 📂 Check out code
+        uses: actions/checkout@v4
+
+      - name: 🤖 Fetch Live Scores & Update Board
+        run: |
+          # 1. Fetch real-time data from a reliable free public soccer API
+          uses_live_data=$(curl -s "https://worldcupjson.net/matches")
+          
+          # 2. Check if we got a valid response back
+          if [ -z "$uses_live_data" ] || [ "$uses_live_data" == "null" ]; then
+            echo "API data unavailable right now. Skipping update."
+            exit 0
+          fi
+
+          # 3. Use Python to parse the soccer data into our exact website format
+          python3 -c "
+          import json, re
+
+          # Fetch raw feed
+          with open('matches.json', 'w') as f:
+              f.write('''$uses_live_data''')
+          
+          with open('matches.json', 'r') as f:
+              raw_matches = json.load(f)
+
+          formatted_matches = []
+          for m in raw_matches:
+              # Normalize status text for your app's CSS highlights
+              status = 'UPCOMING'
+              if m['status'] == 'in_progress': status = 'LIVE'
+              elif m['status'] == 'completed': status = 'FINISHED'
+              
+              time_label = m.get('time', 'Scheduled') if status == 'LIVE' else m.get('datetime', '')[:10]
+              if status == 'FINISHED': time_label = 'Completed'
+
+              formatted_matches.append({
+                  'home': m['home_team']['name'],
+                  'away': m['away_team']['name'],
+                  'homeScore': m['home_team'].get('goals', 0) or 0,
+                  'awayScore': m['away_team'].get('goals', 0) or 0,
+                  'status': status,
+                  'time': time_label
+              })
+
+          # Inject into index.html
+          with open('index.html', 'r') as f:
+              html = f.read()
+
+          replacement = f'// --- ROBOT LIVE DATA INSERTION POINT ---\n        const matches = {json.dumps(formatted_matches, indent=8)};\n        // --- END ROBOT LIVE DATA ---'
+          pattern = r'// --- ROBOT LIVE DATA INSERTION POINT ---.*?// --- END ROBOT LIVE DATA ---'
+          new_html = re.sub(pattern, replacement, html, flags=re.DOTALL)
+
+          with open('index.html', 'w') as f:
+              f.write(new_html)
+          "
+
+      - name: 🚀 Push Updates Live
+        run: |
+          git config --global user.name "CreateBot"
+          git config --global user.email "bot@createadvertising.com"
+          git add index.html
+          git commit -m "⚽ Robot updated the live scores!" || exit 0
+          git push
