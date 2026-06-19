@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏆 COMPANY WORLD CUP TRACKER ⚽</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #00f2fe;
+            --secondary: #4facfe;
+            --dark: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text: #f8fafc;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* Festive Background Elements */
+        body::before {
+            content: "⚽ ✨ 🏆 🎉 🏟️ 🌟";
+            position: fixed;
+            top: -10px;
+            left: 0;
+            width: 100%;
+            font-size: 24px;
+            letter-spacing: 2rem;
+            text-align: center;
+            opacity: 0.15;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        header {
+            text-align: center;
+            margin: 40px auto;
+            max-width: 800px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #ff007f, #7928ca, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        p.subtitle {
+            font-size: 1.2rem;
+            color: #94a3b8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        @media (min-width: 900px) {
+            .container {
+                grid-template-columns: 2fr 1fr;
+            }
+        }
+
+        /* Glassmorphism Cards */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+            padding-bottom: 10px;
+            color: #00f2fe;
+        }
+
+        /* Leaderboard styling */
+        .leaderboard-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .leader-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255,255,255,0.05);
+            padding: 15px 20px;
+            border-radius: 16px;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .leader-item:hover {
+            transform: translateX(5px);
+            background: rgba(255,255,255,0.1);
+        }
+
+        .rank-team {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .rank-badge {
+            font-weight: 800;
+            width: 30px;
+            height: 30px;
+            background: #334155;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .leader-item:nth-child(1) .rank-badge { background: #f59e0b; color: #0f172a; } /* Gold */
+        .leader-item:nth-child(2) .rank-badge { background: #cbd5e1; color: #0f172a; } /* Silver */
+        .leader-item:nth-child(3) .rank-badge { background: #b45309; color: #f8fafc; } /* Bronze */
+
+        .employee-tag {
+            font-size: 0.85rem;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            color: #0f172a;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .points-badge {
+            font-weight: 800;
+            color: #10b981;
+            font-size: 1.2rem;
+        }
+
+        /* Match Cards styling */
+        .matches-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .match-card {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 18px;
+            padding: 20px;
+            border-left: 6px solid #4facfe;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            text-align: center;
+        }
+
+        .match-card.live {
+            border-left-color: #ef4444;
+            animation: pulse-border 2s infinite;
+        }
+
+        .team-side {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .flag {
+            font-size: 2.5rem;
+        }
+
+        .team-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .owner {
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+
+        .center-score {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .score-display {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: 5px;
+            background: rgba(255,255,255,0.1);
+            padding: 5px 15px;
+            border-radius: 10px;
+            margin-bottom: 5px;
+        }
+
+        .match-status {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        .match-card.live .match-status {
+            color: #ef4444;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px rgba(255,0,127,0.3); }
+            to { text-shadow: 0 0 20px rgba(0,242,254,0.5); }
+        }
+
+        @keyframes pulse-border {
+            0% { border-left-color: #ef4444; }
+            50% { border-left-color: rgba(239, 68, 68, 0.2); }
+            100% { border-left-color: #ef4444; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🏆 Office World Cup Tracker ⚽</h1>
+        <p class="subtitle">✨ Real-time Leaderboard & Office Bragging Rights Hub ✨</p>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h2><i class="fa-solid fa-stadium"></i> 🏟️ Fixtures & Live Scores</h2>
+            <div class="matches-grid" id="matches-container">
+                </div>
+        </div>
+
+        <div class="card">
+            <h2><i class="fa-solid fa-trophy"></i> 👑 Current Leaderboard</h2>
+            <div class="leaderboard-list" id="leaderboard-container">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // 🛠️ ADMIN CONTROL PANEL (UPDATE DATA HERE!)
+        // ==========================================
+        
+        // 1. Assign your employees to their chosen world cup country team flag/name.
+        const teamAssignments = {
+            "Mexico": { employee: "Sarah 🇲🇽", flag: "🇲🇽", points: 6 },
+            "South Korea": { employee: "Dave 🇰🇷", flag: "🇰🇷", points: 3 },
+            "United States": { employee: "Alex 🇺🇸", flag: "🇺🇸", points: 3 },
+            "Paraguay": { employee: "Jessica 🇵🇾", flag: "🇵🇾", points: 0 },
+            "Brazil": { employee: "Carlos 🇧🇷", flag: "🇧🇷", points: 1 },
+            "Haiti": { employee: "Marie 🇭🇹", flag: "🇭🇹", points: 0 },
+            "Scotland": { employee: "John 🏴󠁧󠁢󠁳󠁣󠁴󠁿", flag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿", points: 3 },
+            "Morocco": { employee: "Youssef 🇲🇦", flag: "🇲🇦", points: 1 },
+            "Australia": { employee: "Kylie 🇦🇺", flag: "🇦🇺", points: 0 },
+            "Türkiye": { employee: "Ahmet 🇹🇷", flag: "🇹🇷", points: 0 }
+        };
+
+        // 2. Put matches here. Change status to 'LIVE', 'FINISHED', or 'UPCOMING'
+        const matches = [
+            { home: "Mexico", away: "South Korea", homeScore: 1, awayScore: 0, status: "FINISHED", time: "Completed" },
+            { home: "United States", away: "Paraguay", homeScore: 4, awayScore: 1, status: "FINISHED", time: "Completed" },
+            { home: "Brazil", away: "Haiti", homeScore: 2, awayScore: 2, status: "LIVE", time: "72 mins" },
+            { home: "Scotland", away: "Morocco", homeScore: 1, awayScore: 0, status: "LIVE", time: "15 mins" },
+            { home: "United States", away: "Australia", homeScore: 0, awayScore: 0, status: "UPCOMING", time: "Tonight 20:00" },
+            { home: "Türkiye", away: "Paraguay", homeScore: 0, awayScore: 0, status: "UPCOMING", time: "Tomorrow 04:00" }
+        ];
+
+        // ==========================================
+        // 🚀 DYNAMIC ENGINE (No need to touch below)
+        // ==========================================
+        
+        function renderApp() {
+            const matchesContainer = document.getElementById('matches-container');
+            const leaderboardContainer = document.getElementById('leaderboard-container');
+            
+            // Clear existing contents
+            matchesContainer.innerHTML = '';
+            leaderboardContainer.innerHTML = '';
+
+            // Render Matches
+            matches.forEach(match => {
+                const homeInfo = teamAssignments[match.home] || { employee: "Unassigned", flag: "🏳️" };
+                const awayInfo = teamAssignments[match.away] || { employee: "Unassigned", flag: "🏳️" };
+                
+                const matchHtml = `
+                    <div class="match-card ${match.status.toLowerCase()}">
+                        <div class="team-side">
+                            <span class="flag">${homeInfo.flag}</span>
+                            <span class="team-name">${match.home}</span>
+                            <span class="owner">👤 ${homeInfo.employee}</span>
+                        </div>
+                        <div class="center-score">
+                            <div class="score-display">${match.homeScore} - ${match.awayScore}</div>
+                            <span class="match-status">${match.status === 'LIVE' ? '🔴 LIVE - ' + match.time : match.time}</span>
+                        </div>
+                        <div class="team-side">
+                            <span class="flag">${awayInfo.flag}</span>
+                            <span class="team-name">${match.away}</span>
+                            <span class="owner">👤 ${awayInfo.employee}</span>
+                        </div>
+                    </div>
+                `;
+                matchesContainer.innerHTML += matchHtml;
+            });
+
+            // Sort and Render Leaderboard
+            const sortedTeams = Object.keys(teamAssignments).map(key => ({
+                country: key,
+                ...teamAssignments[key]
+            })).sort((a, b) => b.points - a.points);
+
+            sortedTeams.forEach((team, index) => {
+                const leaderHtml = `
+                    <div class="leader-item">
+                        <div class="rank-team">
+                            <div class="rank-badge">${index + 1}</div>
+                            <div>
+                                <strong>${team.flag} ${team.country}</strong>
+                                <span class="employee-tag">${team.employee}</span>
+                            </div>
+                        </div>
+                        <div class="points-badge">${team.points} PTS</div>
+                    </div>
+                `;
+                leaderboardContainer.innerHTML += leaderHtml;
+            });
+        }
+
+        // Initialize App
+        renderApp();
+    </script>
+</body>
+</html>
