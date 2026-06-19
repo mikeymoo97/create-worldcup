@@ -1,8 +1,8 @@
 name: ⚽ Auto Update World Cup Scores
 on:
   schedule:
-    - cron: '0 * * * *' # Wakes up automatically every hour
-  workflow_dispatch: # Allows you to trigger it manually
+    - cron: '0 * * * *'
+  workflow_dispatch:
 
 jobs:
   update-scores:
@@ -17,16 +17,13 @@ jobs:
         env:
           API_KEY: ${{ secrets.FOOTBALL_DATA_API_KEY }}
         run: |
-          # Fetch data securely using your verified token
           uses_live_data=$(curl -k -s -H "X-Auth-Token: $API_KEY" "https://api.football-data.org/v4/competitions/WC/matches")
           
-          # Check for completely empty response
           if [ -z "$uses_live_data" ]; then
             echo "Empty API response. Skipping update."
             exit 1
           fi
 
-          # Safe handling of bash variables inside python
           export RAW_JSON="$uses_live_data"
 
           python3 -c "
@@ -37,7 +34,6 @@ jobs:
 
           formatted_matches = []
           for m in raw_matches:
-              # Map states to fit your CSS classes
               api_status = m.get('status', 'TIMED')
               status = 'UPCOMING'
               if api_status in ['IN_PLAY', 'PAUSED', 'LIVE']: 
@@ -45,7 +41,6 @@ jobs:
               elif api_status == 'FINISHED': 
                   status = 'FINISHED'
               
-              # Grab clean full-time score integers safely
               full_time = m.get('score', {}).get('fullTime', {})
               home_score = full_time.get('home')
               away_score = full_time.get('away')
@@ -53,11 +48,9 @@ jobs:
               if home_score is None: home_score = 0
               if away_score is None: away_score = 0
 
-              # Clean text labels
               time_label = 'Completed' if status == 'FINISHED' else 'Scheduled'
               if status == 'LIVE': time_label = 'Live Match'
 
-              # Standardize names to match your sweepstake key strings
               home_name = m['homeTeam'].get('name', '')
               away_name = m['awayTeam'].get('name', '')
               
@@ -67,6 +60,8 @@ jobs:
               if away_name == 'South Korea': away_name = 'South Korea'
 
               formatted_matches.append({
+                  'id': m.get('id'),
+                  'stage': m.get('stage', 'LAST_16'),
                   'home': home_name,
                   'away': away_name,
                   'homeScore': int(home_score),
@@ -76,7 +71,6 @@ jobs:
                   'utcDate': m.get('utcDate', '')
               })
 
-          # Inject parsed results array straight into your index.html
           with open('index.html', 'r') as f:
               html = f.read()
 
@@ -94,5 +88,5 @@ jobs:
           git config --global user.name "CreateBot"
           git config --global user.email "bot@createadvertising.com"
           git add index.html
-          git commit -m "⚽ Robot successfully synced tournament match dates!" || exit 0
+          git commit -m "🎮 Smash Bros Tournament Tree Engine Added!" || exit 0
           git push
