@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🏆 CREATE ADVERTISING WORLD CUP TRACKER ⚽</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800;900&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
             --primary: #10b981; /* Football Green */
             --secondary: #047857; 
-            --pitch-bg: linear-gradient(135deg, #022c22 0%, #059669 40%, #10b981 70%, #047857 100%);
-            --card-bg: #ffffff; /* Clean White Boxes */
+            --pitch-bg: radial-gradient(circle at 50% 30%, #064e3b 0%, #022c22 70%, #011510 100%);
+            --card-bg: rgba(255, 255, 255, 0.96); 
             --text-dark: #0f172a;
             --text-muted: #475569;
         }
@@ -28,85 +28,112 @@
             background: var(--pitch-bg);
             color: var(--text-dark);
             min-height: 100vh;
-            padding: 20px;
+            padding: 30px 20px;
             overflow-x: hidden;
             position: relative;
         }
 
-        /* High Density Stadium Vibes Overlay */
+        /* 🏟️ HIGH-OCTANE ITV INTRO BACKGROUND OVERLAYS */
         body::before {
-            content: "⚽ ✨ 🏟️ 🏆 ⚽ 🎉 🌟 ⚽ 🏟️ 🏆 ⚽ ✨ 🏟️ 🏆 ⚽ 🎉 🌟 ⚽ 🏟️ 🏆";
+            content: "✨ 🏟️ 🏆 ⚽ ⚡ 🔥 ✨ 🏟️ 🏆 ⚽ ⚡ 🔥 ✨ 🏟️ 🏆 ⚽ ⚡ 🔥 ✨ 🏟️ 🏆";
             position: fixed;
             top: -10px;
-            left: 0;
-            width: 100%;
-            font-size: 26px;
-            letter-spacing: 1.5rem;
+            left: -5%;
+            width: 110%;
+            font-size: 32px;
+            letter-spacing: 2rem;
+            text-align: center;
+            opacity: 0.35;
+            pointer-events: none;
+            white-space: nowrap;
+            line-height: 2;
+            animation: broadcast-drift 20s linear infinite;
+            text-shadow: 0 0 12px rgba(254, 240, 138, 0.6), 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        body::after {
+            content: "🔥 ⚡ ⚽ 🏆 🏟️ ✨ 🔥 ⚡ ⚽ 🏆 🏟️ ✨ 🔥 ⚡ ⚽ 🏆 🏟️ ✨ 🔥 ⚡ ⚽";
+            position: fixed;
+            bottom: 10px;
+            left: -5%;
+            width: 110%;
+            font-size: 28px;
+            letter-spacing: 2.2rem;
             text-align: center;
             opacity: 0.25;
             pointer-events: none;
             white-space: nowrap;
-            line-height: 2;
-            text-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            animation: broadcast-drift-reverse 25s linear infinite;
         }
 
-        /* Second Layer of Background Elements for extra depth */
-        body::after {
-            content: "⚽ ✨ 🏟️ 🏆 ⚽ 🎉 🌟 ⚽ 🏟️ 🏆 ⚽ ✨ 🏟️ 🏆 ⚽ 🎉 🌟 ⚽ 🏟️ 🏆";
+        /* Tactical Pitch Grid Overlay */
+        .stadium-grid {
             position: fixed;
-            bottom: 20px;
+            top: 0;
             left: 0;
             width: 100%;
-            font-size: 22px;
-            letter-spacing: 1.8rem;
-            text-align: center;
-            opacity: 0.15;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(16, 185, 129, 0.05) 2px, transparent 2px),
+                linear-gradient(90deg, rgba(16, 185, 129, 0.05) 2px, transparent 2px);
+            background-size: 50px 50px;
             pointer-events: none;
-            white-space: nowrap;
+            z-index: 1;
+        }
+
+        @keyframes broadcast-drift {
+            0% { transform: translateX(0) scale(1); }
+            50% { transform: translateX(-30px) scale(1.05); }
+            100% { transform: translateX(0) scale(1); }
+        }
+
+        @keyframes broadcast-drift-reverse {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(30px); }
+            100% { transform: translateX(0); }
         }
 
         /* =========================================================
-           🏟️ NEW LEVEL UP STADIUM HEADER
+           🏟️ STADIUM SCOREBOARD HEADER
            ========================================================= */
         header {
             text-align: center;
-            margin: 30px auto 50px auto;
+            margin: 20px auto 40px auto;
             max-width: 1100px;
             position: relative;
             z-index: 10;
         }
 
         .header-top {
-            font-size: 1.2rem;
-            font-weight: 800;
+            font-size: 1.4rem;
+            font-weight: 900;
             color: #fef08a;
             text-transform: uppercase;
-            letter-spacing: 6px;
-            margin-bottom: 5px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            letter-spacing: 8px;
+            margin-bottom: 8px;
+            text-shadow: 0 0 15px rgba(234, 179, 8, 0.7), 0 2px 4px rgba(0,0,0,0.8);
             display: inline-block;
-            border-bottom: 2px solid #fef08a;
+            border-bottom: 3px solid #fef08a;
             padding-bottom: 5px;
         }
 
         h1 {
-            font-size: 4.5rem;
+            font-size: 5.2rem;
             font-weight: 900;
-            line-height: 1.1;
-            /* Neon Gradient Stadium Mesh style text */
-            background: linear-gradient(180deg, #ffffff 30%, #fef08a 65%, #eab308 100%);
+            line-height: 1.0;
+            background: linear-gradient(180deg, #ffffff 20%, #fef08a 60%, #eab308 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-transform: uppercase;
-            letter-spacing: -1px;
+            letter-spacing: -2px;
             margin: 10px 0;
-            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.6)) 
-                    drop-shadow(0 0 20px rgba(254, 240, 138, 0.3));
+            filter: drop-shadow(0 6px 15px rgba(0, 0, 0, 0.8)) 
+                    drop-shadow(0 0 30px rgba(254, 240, 138, 0.4));
         }
 
         @media (max-width: 768px) {
-            h1 { font-size: 2.8rem; }
-            .header-top { font-size: 0.9rem; letter-spacing: 4px; }
+            h1 { font-size: 3rem; }
+            .header-top { font-size: 1rem; letter-spacing: 4px; }
         }
 
         p.subtitle {
@@ -117,18 +144,18 @@
             font-style: italic;
             letter-spacing: 4px;
             margin-top: 15px;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.6);
             display: inline-block;
-            padding: 6px 30px;
+            padding: 8px 35px;
             border-radius: 50px;
             border: 2px dashed #10b981;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            text-shadow: 0 0 8px rgba(16, 185, 129, 0.8);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            text-shadow: 0 0 10px rgba(16, 185, 129, 0.9);
         }
 
-        /* Responsive 3-Column Layout */
+        /* 4-Column Responsive Layout Grid */
         .container {
-            max-width: 1600px;
+            max-width: 1800px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: 1fr;
@@ -137,34 +164,37 @@
             z-index: 10;
         }
 
-        @media (min-width: 1200px) {
+        @media (min-width: 1400px) {
             .container {
-                grid-template-columns: 1.2fr 1fr 0.9fr;
+                grid-template-columns: 1.1fr 1.1fr 1fr 0.9fr;
             }
         }
 
         /* Pitch White Cards */
         .card {
             background: var(--card-bg);
-            border: 4px solid #fef08a; /* Enhanced Golden boundary outline */
+            border: 4px solid #fef08a; 
             border-radius: 24px;
             padding: 20px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.35);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
             max-height: 82vh;
             display: flex;
             flex-direction: column;
+            backdrop-filter: blur(5px);
         }
 
         h2 {
-            font-size: 1.4rem;
+            font-size: 1.35rem;
             margin-bottom: 15px;
             display: flex;
             align-items: center;
             gap: 10px;
-            border-bottom: 3px solid #f0fdf4;
+            border-bottom: 3px solid #e2e8f0;
             padding-bottom: 10px;
             color: #047857;
             flex-shrink: 0;
+            text-transform: uppercase;
+            font-weight: 800;
         }
 
         .scrollable-content {
@@ -261,7 +291,7 @@
             background: #f8fafc;
             border: 1px solid #e2e8f0;
             border-radius: 18px;
-            padding: 15px 20px;
+            padding: 15px 15px;
             margin-bottom: 12px;
             border-left: 6px solid #3b82f6; 
             display: grid;
@@ -274,9 +304,10 @@
             border-left-color: #ef4444;
             background: #fef2f2;
             animation: pulse-bg 2s infinite linear;
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.15);
         }
 
-        .match-card.finished { border-left-color: #10b981; }
+        .match-card.finished { border-left-color: #10b981; background: #f0fdf4; }
         .match-card.upcoming { border-left-color: #64748b; }
 
         .team-side {
@@ -287,33 +318,38 @@
         }
 
         .flag { font-size: 2.2rem; }
-        .team-name { font-weight: 600; font-size: 1rem; color: var(--text-dark); }
-        .owner { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
+        .team-name { font-weight: 700; font-size: 0.95rem; color: var(--text-dark); }
+        .owner { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
 
         .center-score {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 0 15px;
+            padding: 0 10px;
         }
 
         .score-display {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 800;
-            letter-spacing: 4px;
+            letter-spacing: 2px;
             background: #e2e8f0;
-            padding: 3px 12px;
+            padding: 3px 10px;
             border-radius: 10px;
             margin-bottom: 3px;
         }
+        
+        .match-card.live .score-display {
+            background: #ef4444;
+            color: #ffffff;
+        }
 
         .match-status {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: var(--text-muted);
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .match-card.live .match-status { color: #ef4444; }
@@ -327,21 +363,29 @@
 </head>
 <body>
 
+    <div class="stadium-grid"></div>
+
     <header>
-        <div class="header-top">🏆 Create Advertising 🏆</div>
+        <div class="header-top">⚡ CREATE ADVERTISING LIVE ⚡</div>
         <h1>WORLD CUP TRACKER</h1>
         <p class="subtitle">its coming home 🏴󠁧󠁢󠁥󠁮󠁧󠁿</p>
     </header>
 
     <div class="container">
         <div class="card">
-            <h2>🏟️ Fixtures & Live Scores</h2>
-            <div class="scrollable-content matches-grid" id="matches-container">
+            <h2>🔴 Active & Upcoming</h2>
+            <div class="scrollable-content matches-grid" id="active-matches-container">
                 </div>
         </div>
 
         <div class="card">
-            <h2>👑 Current Leaderboard</h2>
+            <h2>✅ Past Results</h2>
+            <div class="scrollable-content matches-grid" id="past-matches-container">
+                </div>
+        </div>
+
+        <div class="card">
+            <h2>👑 Current Standings</h2>
             <div class="scrollable-content leaderboard-list" id="leaderboard-container">
                 </div>
         </div>
@@ -363,7 +407,7 @@
             "South Africa": { employee: "Alastair Veale", flag: "🇿🇦" },
             "South Korea": { employee: "Anaïs Soto", flag: "🇰🇷" },
             "Czechia": { employee: "Steve Yealin", flag: "🇨🇿" },
-            "Bosnia": { employee: "David Tolu Graham", flag: "🇧🇦" },
+            "Bosnia-Herzegovina": { employee: "David Tolu Graham", flag: "🇧🇦" },
             "Qatar": { employee: "Sunil Beri", flag: "🇶🇦" },
             "Switzerland": { employee: "Becca Capel", flag: "🇨🇭" },
             "Brazil": { employee: "Karth Suthahar", flag: "🇧🇷" },
@@ -375,7 +419,7 @@
             "Australia": { employee: "Aimee Muddiman", flag: "🇦🇺" },
             "Turkey": { employee: "Anousla Watts", flag: "🇹🇷" },
             "Germany": { employee: "Gery Batson", flag: "🇩🇪" },
-            "Curacao": { employee: "Mike Lowe", flag: "🇨🇼" },
+            "Curaçao": { employee: "Mike Lowe", flag: "🇨🇼" },
             "Ivory Coast": { employee: "Daniel Sinclair", flag: "🇨🇮" },
             "Netherlands": { employee: "Shaunak Ranade", flag: "🇳🇱" },
             "Japan": { employee: "Vijay Sodhi", flag: "🇯🇵" },
@@ -410,839 +454,11 @@
         // 2. MATCH FIXTURES ENGINE 
         // --- ROBOT LIVE DATA INSERTION POINT ---
         const matches = [
-        {
-                "home": "Mexico",
-                "away": "South Africa",
-                "homeScore": 2,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "South Korea",
-                "away": "Czechia",
-                "homeScore": 2,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Canada",
-                "away": "Bosnia-Herzegovina",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "USA",
-                "away": "Paraguay",
-                "homeScore": 4,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Qatar",
-                "away": "Switzerland",
-                "homeScore": 1,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Brazil",
-                "away": "Morocco",
-                "homeScore": 1,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Haiti",
-                "away": "Scotland",
-                "homeScore": 0,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Australia",
-                "away": "Turkey",
-                "homeScore": 2,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Germany",
-                "away": "Cura\u00e7ao",
-                "homeScore": 7,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Netherlands",
-                "away": "Japan",
-                "homeScore": 2,
-                "awayScore": 2,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Ivory Coast",
-                "away": "Ecuador",
-                "homeScore": 1,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Sweden",
-                "away": "Tunisia",
-                "homeScore": 5,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Spain",
-                "away": "Cape Verde Islands",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Belgium",
-                "away": "Egypt",
-                "homeScore": 1,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Saudi Arabia",
-                "away": "Uruguay",
-                "homeScore": 1,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Iran",
-                "away": "New Zealand",
-                "homeScore": 2,
-                "awayScore": 2,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "France",
-                "away": "Senegal",
-                "homeScore": 3,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Iraq",
-                "away": "Norway",
-                "homeScore": 1,
-                "awayScore": 4,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Argentina",
-                "away": "Algeria",
-                "homeScore": 3,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Austria",
-                "away": "Jordan",
-                "homeScore": 3,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Portugal",
-                "away": "Congo DR",
-                "homeScore": 1,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "England",
-                "away": "Croatia",
-                "homeScore": 4,
-                "awayScore": 2,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Ghana",
-                "away": "Panama",
-                "homeScore": 1,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Uzbekistan",
-                "away": "Colombia",
-                "homeScore": 1,
-                "awayScore": 3,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Czechia",
-                "away": "South Africa",
-                "homeScore": 1,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Switzerland",
-                "away": "Bosnia-Herzegovina",
-                "homeScore": 4,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Canada",
-                "away": "Qatar",
-                "homeScore": 6,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Mexico",
-                "away": "South Korea",
-                "homeScore": 1,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "USA",
-                "away": "Australia",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Scotland",
-                "away": "Morocco",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Brazil",
-                "away": "Haiti",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Turkey",
-                "away": "Paraguay",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Netherlands",
-                "away": "Sweden",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Germany",
-                "away": "Ivory Coast",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Ecuador",
-                "away": "Cura\u00e7ao",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Tunisia",
-                "away": "Japan",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Spain",
-                "away": "Saudi Arabia",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Belgium",
-                "away": "Iran",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Uruguay",
-                "away": "Cape Verde Islands",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "New Zealand",
-                "away": "Egypt",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Argentina",
-                "away": "Austria",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "France",
-                "away": "Iraq",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Norway",
-                "away": "Senegal",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Jordan",
-                "away": "Algeria",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Portugal",
-                "away": "Uzbekistan",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "England",
-                "away": "Ghana",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Panama",
-                "away": "Croatia",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Colombia",
-                "away": "Congo DR",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Switzerland",
-                "away": "Canada",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Bosnia-Herzegovina",
-                "away": "Qatar",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Morocco",
-                "away": "Haiti",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Scotland",
-                "away": "Brazil",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Czechia",
-                "away": "Mexico",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "South Africa",
-                "away": "South Korea",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Ecuador",
-                "away": "Germany",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Cura\u00e7ao",
-                "away": "Ivory Coast",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Tunisia",
-                "away": "Netherlands",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Japan",
-                "away": "Sweden",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Turkey",
-                "away": "USA",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Paraguay",
-                "away": "Australia",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Norway",
-                "away": "France",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Senegal",
-                "away": "Iraq",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Uruguay",
-                "away": "Spain",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Cape Verde Islands",
-                "away": "Saudi Arabia",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "New Zealand",
-                "away": "Belgium",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Egypt",
-                "away": "Iran",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Panama",
-                "away": "England",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Croatia",
-                "away": "Ghana",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Colombia",
-                "away": "Portugal",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Congo DR",
-                "away": "Uzbekistan",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Jordan",
-                "away": "Argentina",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Algeria",
-                "away": "Austria",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        }
-];
+            { home: "England", away: "Germany", homeScore: 2, awayScore: 1, status: "FINISHED", time: "Completed" },
+            { home: "Brazil", away: "France", homeScore: 2, awayScore: 2, status: "LIVE", time: "65 mins" },
+            { home: "Mexico", away: "USA", homeScore: 0, awayScore: 0, status: "UPCOMING", time: "Tonight 20:00" },
+            { home: "Japan", away: "Netherlands", homeScore: 0, awayScore: 0, status: "UPCOMING", time: "Tomorrow 15:00" }
+        ];
         // --- END ROBOT LIVE DATA ---
 
         // ==========================================
@@ -1250,13 +466,15 @@
         // ==========================================
         
         function renderApp() {
-            const matchesContainer = document.getElementById('matches-container');
+            const activeContainer = document.getElementById('active-matches-container');
+            const pastContainer = document.getElementById('past-matches-container');
             const leaderboardContainer = document.getElementById('leaderboard-container');
             const directoryContainer = document.getElementById('directory-container');
             
-            if(!matchesContainer || !leaderboardContainer || !directoryContainer) return;
+            if(!activeContainer || !pastContainer || !leaderboardContainer || !directoryContainer) return;
             
-            matchesContainer.innerHTML = '';
+            activeContainer.innerHTML = '';
+            pastContainer.innerHTML = '';
             leaderboardContainer.innerHTML = '';
             directoryContainer.innerHTML = '';
 
@@ -1289,7 +507,7 @@
                         </div>
                         <div class="center-score">
                             <div class="score-display">${match.homeScore} - ${match.awayScore}</div>
-                            <span class="match-status">${match.status === 'LIVE' ? '🔴 LIVE - ' + match.time : match.time}</span>
+                            <span class="match-status">${match.status === 'LIVE' ? '🔴 LIVE' : match.time}</span>
                         </div>
                         <div class="team-side">
                             <span class="flag">${awayInfo.flag}</span>
@@ -1298,8 +516,17 @@
                         </div>
                     </div>
                 `;
-                matchesContainer.innerHTML += matchHtml;
+                
+                if (match.status === 'FINISHED') {
+                    pastContainer.innerHTML += matchHtml;
+                } else {
+                    activeContainer.innerHTML += matchHtml;
+                }
             });
+
+            // Fallbacks for clean columns if no items exist
+            if (activeContainer.innerHTML === '') activeContainer.innerHTML = '<p style="text-align:center;color:gray;margin-top:20px;">No live or upcoming matches scheduled.</p>';
+            if (pastContainer.innerHTML === '') pastContainer.innerHTML = '<p style="text-align:center;color:gray;margin-top:20px;">No completed match history yet.</p>';
 
             const allTeams = Object.keys(teamAssignments).map(key => ({
                 country: key,
