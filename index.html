@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🏆 CREATE ADVERTISING WORLD CUP TRACKER ⚽</title>
-    <!-- Fixed Google Fonts Link & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -66,34 +65,65 @@
             white-space: nowrap;
         }
 
+        /* =========================================================
+           🏟️ NEW LEVEL UP STADIUM HEADER
+           ========================================================= */
         header {
             text-align: center;
-            margin: 40px auto;
-            max-width: 900px;
+            margin: 30px auto 50px auto;
+            max-width: 1100px;
             position: relative;
             z-index: 10;
         }
 
-        h1 {
-            font-size: 3rem;
+        .header-top {
+            font-size: 1.2rem;
             font-weight: 800;
-            background: linear-gradient(45deg, #ffffff, #fef08a, #ffffff);
+            color: #fef08a;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            margin-bottom: 5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            display: inline-block;
+            border-bottom: 2px solid #fef08a;
+            padding-bottom: 5px;
+        }
+
+        h1 {
+            font-size: 4.5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            /* Neon Gradient Stadium Mesh style text */
+            background: linear-gradient(180deg, #ffffff 30%, #fef08a 65%, #eab308 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
-            text-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            letter-spacing: -1px;
+            margin: 10px 0;
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.6)) 
+                    drop-shadow(0 0 20px rgba(254, 240, 138, 0.3));
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.8rem; }
+            .header-top { font-size: 0.9rem; letter-spacing: 4px; }
         }
 
         p.subtitle {
-            font-size: 1.5rem;
-            color: #fef08a;
+            font-size: 1.8rem;
+            color: #ffffff;
             font-weight: 800;
-            text-transform: lowercase;
+            text-transform: uppercase;
             font-style: italic;
-            text-shadow: 0 2px 6px rgba(0,0,0,0.4);
-            letter-spacing: 1px;
+            letter-spacing: 4px;
+            margin-top: 15px;
+            background: rgba(0, 0, 0, 0.4);
+            display: inline-block;
+            padding: 6px 30px;
+            border-radius: 50px;
+            border: 2px dashed #10b981;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            text-shadow: 0 0 8px rgba(16, 185, 129, 0.8);
         }
 
         /* Responsive 3-Column Layout */
@@ -298,33 +328,28 @@
 <body>
 
     <header>
-        <h1>🏆 CREATE ADVERTISING WORLD CUP TRACKER ⚽</h1>
-        <p class="subtitle">its coming home</p>
+        <div class="header-top">🏆 Create Advertising 🏆</div>
+        <h1>WORLD CUP TRACKER</h1>
+        <p class="subtitle">its coming home 🏴󠁧󠁢󠁥󠁮󠁧󠁿</p>
     </header>
 
     <div class="container">
-        <!-- 1st Column: Fixtures -->
         <div class="card">
             <h2>🏟️ Fixtures & Live Scores</h2>
             <div class="scrollable-content matches-grid" id="matches-container">
-                <!-- Injected via JavaScript -->
-            </div>
+                </div>
         </div>
 
-        <!-- 2nd Column: Leaderboard -->
         <div class="card">
             <h2>👑 Current Leaderboard</h2>
             <div class="scrollable-content leaderboard-list" id="leaderboard-container">
-                <!-- Injected via JavaScript -->
-            </div>
+                </div>
         </div>
 
-        <!-- 3rd Column: Employee Directory -->
         <div class="card">
             <h2>📋 Office Directory</h2>
             <div class="scrollable-content" id="directory-container">
-                <!-- Injected via JavaScript -->
-            </div>
+                </div>
         </div>
     </div>
 
