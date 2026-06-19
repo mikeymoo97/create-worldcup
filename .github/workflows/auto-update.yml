@@ -1,8 +1,8 @@
 name: ⚽ Auto Update World Cup Scores
 on:
   schedule:
-    - cron: '0 * * * *' # Wakes up automatically every hour
-  workflow_dispatch: # Allows you to trigger it manually
+    - cron: '0 * * * *'
+  workflow_dispatch:
 
 jobs:
   update-scores:
@@ -17,32 +17,35 @@ jobs:
         env:
           API_KEY: ${{ secrets.FOOTBALL_DATA_API_KEY }}
         run: |
-          # Fetch data securely using your official football-data.org token
-          # -k included to safeguard against any handshake/exit code 60 errors
+          # Fetch data securely
           uses_live_data=$(curl -k -s -H "X-Auth-Token: $API_KEY" "https://api.football-data.org/v4/competitions/WC/matches")
           
-          if [ -z "$uses_live_data" ] || echo "$uses_live_data" | grep -q '"error"'; then
-            echo "API Error or empty response. Check your API key token in GitHub Secrets."
+          # DIAGNOSTIC: Print response if it fails so you can see why
+          echo "Raw API Response: $uses_live_data"
+
+          if [ -z "$uses_live_data" ] || echo "$uses_live_data" | grep -q '"errorCode"'; then
+            echo "❌ The API Server rejected the request. Look at the response above!"
             exit 1
           fi
 
-          # Let Python process football-data.org's specific structural layout
           python3 -c "
           import json, re
 
           raw_data = json.loads('''$uses_live_data''')
           raw_matches = raw_data.get('matches', [])
 
+          if not raw_matches:
+              print('No active matches found in payload.')
+              exit(0)
+
           formatted_matches = []
           for m in raw_matches:
-              # Map statuses to fit your frontend CSS engine
               status = 'UPCOMING'
-              if m['status'] in ['IN_PLAY', 'PAUSED']: 
+              if m.get('status') in ['IN_PLAY', 'PAUSED', 'LIVE']: 
                   status = 'LIVE'
-              elif m['status'] == 'FINISHED': 
+              elif m.get('status') == 'FINISHED': 
                   status = 'FINISHED'
               
-              # Pull scores cleanly, defaulting to 0 if none exist yet
               home_score = m.get('score', {}).get('fullTime', {}).get('home', 0)
               away_score = m.get('score', {}).get('fullTime', {}).get('away', 0)
               if home_score is None: home_score = 0
@@ -51,16 +54,19 @@ jobs:
               time_label = 'Completed' if status == 'FINISHED' else 'Scheduled'
               if status == 'LIVE': time_label = 'Live Match'
 
+              # Clean up names to match your country layout
+              home_name = m['homeTeam'].get('shortName', m['homeTeam']['name'])
+              away_name = m['awayTeam'].get('shortName', m['awayTeam']['name'])
+
               formatted_matches.append({
-                  'home': m['homeTeam']['name'],
-                  'away': m['awayTeam']['name'],
+                  'home': home_name,
+                  'away': away_name,
                   'homeScore': home_score,
                   'awayScore': away_score,
                   'status': status,
                   'time': time_label
               })
 
-          # Inject clean payload into index.html
           with open('index.html', 'r') as f:
               html = f.read()
 
@@ -77,5 +83,5 @@ jobs:
           git config --global user.name "CreateBot"
           git config --global user.email "bot@createadvertising.com"
           git add index.html
-          git commit -m "⚽ Robot updated the live scores via football-data.org!" || exit 0
+          git commit -m "⚽ Robot updated live scores!" || exit 0
           git push
