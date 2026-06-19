@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🏆 CREATE ADVERTISING WORLD CUP TRACKER ⚽</title>
+    <!-- Fixed Google Fonts Link & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800;900&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -354,6 +355,21 @@
 
         .match-card.live .match-status { color: #ef4444; }
 
+        /* 🗓️ BRAND NEW STYLISH MATCH DATE INSIGNIA */
+        .match-date-badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #1e293b;
+            background: rgba(226, 232, 240, 0.6);
+            padding: 2px 8px;
+            border-radius: 6px;
+            margin-top: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            border: 1px solid rgba(203, 213, 225, 0.5);
+        }
+
         @keyframes pulse-bg {
             0% { background-color: #fef2f2; }
             50% { background-color: #fee2e2; }
@@ -372,28 +388,36 @@
     </header>
 
     <div class="container">
+        <!-- Column 1: Live & Upcoming -->
         <div class="card">
             <h2>🔴 Active & Upcoming</h2>
             <div class="scrollable-content matches-grid" id="active-matches-container">
-                </div>
+                <!-- Injected via JavaScript -->
+            </div>
         </div>
 
+        <!-- Column 2: Past Matches -->
         <div class="card">
             <h2>✅ Past Results</h2>
             <div class="scrollable-content matches-grid" id="past-matches-container">
-                </div>
+                <!-- Injected via JavaScript -->
+            </div>
         </div>
 
+        <!-- Column 3: Leaderboard -->
         <div class="card">
             <h2>👑 Current Standings</h2>
             <div class="scrollable-content leaderboard-list" id="leaderboard-container">
-                </div>
+                <!-- Injected via JavaScript -->
+            </div>
         </div>
 
+        <!-- Column 4: Employee Directory -->
         <div class="card">
             <h2>📋 Office Directory</h2>
             <div class="scrollable-content" id="directory-container">
-                </div>
+                <!-- Injected via JavaScript -->
+            </div>
         </div>
     </div>
 
@@ -454,839 +478,11 @@
         // 2. MATCH FIXTURES ENGINE 
         // --- ROBOT LIVE DATA INSERTION POINT ---
         const matches = [
-        {
-                "home": "Mexico",
-                "away": "South Africa",
-                "homeScore": 2,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "South Korea",
-                "away": "Czechia",
-                "homeScore": 2,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Canada",
-                "away": "Bosnia-Herzegovina",
-                "homeScore": 1,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "USA",
-                "away": "Paraguay",
-                "homeScore": 4,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Qatar",
-                "away": "Switzerland",
-                "homeScore": 1,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Brazil",
-                "away": "Morocco",
-                "homeScore": 1,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Haiti",
-                "away": "Scotland",
-                "homeScore": 0,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Australia",
-                "away": "Turkey",
-                "homeScore": 2,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Germany",
-                "away": "Cura\u00e7ao",
-                "homeScore": 7,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Netherlands",
-                "away": "Japan",
-                "homeScore": 2,
-                "awayScore": 2,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Ivory Coast",
-                "away": "Ecuador",
-                "homeScore": 1,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Sweden",
-                "away": "Tunisia",
-                "homeScore": 5,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Spain",
-                "away": "Cape Verde Islands",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Belgium",
-                "away": "Egypt",
-                "homeScore": 1,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Saudi Arabia",
-                "away": "Uruguay",
-                "homeScore": 1,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Iran",
-                "away": "New Zealand",
-                "homeScore": 2,
-                "awayScore": 2,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "France",
-                "away": "Senegal",
-                "homeScore": 3,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Iraq",
-                "away": "Norway",
-                "homeScore": 1,
-                "awayScore": 4,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Argentina",
-                "away": "Algeria",
-                "homeScore": 3,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Austria",
-                "away": "Jordan",
-                "homeScore": 3,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Portugal",
-                "away": "Congo DR",
-                "homeScore": 1,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "England",
-                "away": "Croatia",
-                "homeScore": 4,
-                "awayScore": 2,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Ghana",
-                "away": "Panama",
-                "homeScore": 1,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Uzbekistan",
-                "away": "Colombia",
-                "homeScore": 1,
-                "awayScore": 3,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Czechia",
-                "away": "South Africa",
-                "homeScore": 1,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Switzerland",
-                "away": "Bosnia-Herzegovina",
-                "homeScore": 4,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Canada",
-                "away": "Qatar",
-                "homeScore": 6,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "Mexico",
-                "away": "South Korea",
-                "homeScore": 1,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed"
-        },
-        {
-                "home": "USA",
-                "away": "Australia",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Scotland",
-                "away": "Morocco",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Brazil",
-                "away": "Haiti",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Turkey",
-                "away": "Paraguay",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Netherlands",
-                "away": "Sweden",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Germany",
-                "away": "Ivory Coast",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Ecuador",
-                "away": "Cura\u00e7ao",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Tunisia",
-                "away": "Japan",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Spain",
-                "away": "Saudi Arabia",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Belgium",
-                "away": "Iran",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Uruguay",
-                "away": "Cape Verde Islands",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "New Zealand",
-                "away": "Egypt",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Argentina",
-                "away": "Austria",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "France",
-                "away": "Iraq",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Norway",
-                "away": "Senegal",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Jordan",
-                "away": "Algeria",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Portugal",
-                "away": "Uzbekistan",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "England",
-                "away": "Ghana",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Panama",
-                "away": "Croatia",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Colombia",
-                "away": "Congo DR",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Switzerland",
-                "away": "Canada",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Bosnia-Herzegovina",
-                "away": "Qatar",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Morocco",
-                "away": "Haiti",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Scotland",
-                "away": "Brazil",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Czechia",
-                "away": "Mexico",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "South Africa",
-                "away": "South Korea",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Ecuador",
-                "away": "Germany",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Cura\u00e7ao",
-                "away": "Ivory Coast",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Tunisia",
-                "away": "Netherlands",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Japan",
-                "away": "Sweden",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Turkey",
-                "away": "USA",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Paraguay",
-                "away": "Australia",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Norway",
-                "away": "France",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Senegal",
-                "away": "Iraq",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Uruguay",
-                "away": "Spain",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Cape Verde Islands",
-                "away": "Saudi Arabia",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "New Zealand",
-                "away": "Belgium",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Egypt",
-                "away": "Iran",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Panama",
-                "away": "England",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Croatia",
-                "away": "Ghana",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Colombia",
-                "away": "Portugal",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Congo DR",
-                "away": "Uzbekistan",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Jordan",
-                "away": "Argentina",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": "Algeria",
-                "away": "Austria",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled"
-        }
-];
+            { home: "England", away: "Germany", homeScore: 2, awayScore: 1, status: "FINISHED", time: "Completed", utcDate: "2026-06-15T18:00:00Z" },
+            { home: "Brazil", away: "France", homeScore: 2, awayScore: 2, status: "LIVE", time: "65 mins", utcDate: "2026-06-19T15:00:00Z" },
+            { home: "Mexico", away: "USA", homeScore: 0, awayScore: 0, status: "UPCOMING", time: "Scheduled", utcDate: "2026-06-19T19:00:00Z" },
+            { home: "Japan", away: "Netherlands", homeScore: 0, awayScore: 0, status: "UPCOMING", time: "Scheduled", utcDate: "2026-06-20T14:00:00Z" }
+        ];
         // --- END ROBOT LIVE DATA ---
 
         // ==========================================
@@ -1326,6 +522,13 @@
                 const homeInfo = teamAssignments[match.home] || { employee: "Unassigned", flag: "🏳️" };
                 const awayInfo = teamAssignments[match.away] || { employee: "Unassigned", flag: "🏳️" };
                 
+                // Formats the timestamp to a clean user-localized date view ("19 Jun, 15:00")
+                let formattedDate = "";
+                if (match.utcDate) {
+                    const d = new Date(match.utcDate);
+                    formattedDate = d.toLocaleString('en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+                }
+                
                 const matchHtml = `
                     <div class="match-card ${match.status.toLowerCase()}">
                         <div class="team-side">
@@ -1336,6 +539,7 @@
                         <div class="center-score">
                             <div class="score-display">${match.homeScore} - ${match.awayScore}</div>
                             <span class="match-status">${match.status === 'LIVE' ? '🔴 LIVE' : match.time}</span>
+                            ${formattedDate ? `<span class="match-date-badge"><i class="fa-regular fa-calendar-days"></i> ${formattedDate}</span>` : ''}
                         </div>
                         <div class="team-side">
                             <span class="flag">${awayInfo.flag}</span>
