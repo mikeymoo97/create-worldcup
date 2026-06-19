@@ -4,377 +4,92 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🏆 CREATE ADVERTISING WORLD CUP TRACKER ⚽</title>
-    <!-- Fixed Google Fonts Link & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800;900&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --primary: #10b981; /* Football Green */
-            --secondary: #047857; 
+            --primary: #10b981;
             --pitch-bg: radial-gradient(circle at 50% 30%, #064e3b 0%, #022c22 70%, #011510 100%);
             --card-bg: rgba(255, 255, 255, 0.96); 
             --text-dark: #0f172a;
             --text-muted: #475569;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+        body { background: var(--pitch-bg); color: var(--text-dark); min-height: 100vh; padding: 30px 20px; overflow-x: hidden; position: relative; }
 
-        body {
-            background: var(--pitch-bg);
-            color: var(--text-dark);
-            min-height: 100vh;
-            padding: 30px 20px;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* 🏟️ HIGH-OCTANE ITV INTRO BACKGROUND OVERLAYS */
+        /* 🏟️ STADIUM BACKGROUND OVERLAYS */
         body::before {
             content: "✨ 🏟️ 🏆 ⚽ ⚡ 🔥 ✨ 🏟️ 🏆 ⚽ ⚡ 🔥 ✨ 🏟️ 🏆 ⚽ ⚡ 🔥 ✨ 🏟️ 🏆";
-            position: fixed;
-            top: -10px;
-            left: -5%;
-            width: 110%;
-            font-size: 32px;
-            letter-spacing: 2rem;
-            text-align: center;
-            opacity: 0.35;
-            pointer-events: none;
-            white-space: nowrap;
-            line-height: 2;
-            animation: broadcast-drift 20s linear infinite;
-            text-shadow: 0 0 12px rgba(254, 240, 138, 0.6), 0 4px 10px rgba(0,0,0,0.5);
+            position: fixed; top: -10px; left: -5%; width: 110%; font-size: 32px; letter-spacing: 2rem;
+            text-align: center; opacity: 0.25; pointer-events: none; white-space: nowrap; line-height: 2;
+            animation: broadcast-drift 20s linear infinite; text-shadow: 0 0 12px rgba(254, 240, 138, 0.6);
         }
+        .stadium-grid { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: linear-gradient(rgba(16, 185, 129, 0.05) 2px, transparent 2px), linear-gradient(90deg, rgba(16, 185, 129, 0.05) 2px, transparent 2px); background-size: 50px 50px; pointer-events: none; z-index: 1; }
+        @keyframes broadcast-drift { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-20px); } }
 
-        body::after {
-            content: "🔥 ⚡ ⚽ 🏆 🏟️ ✨ 🔥 ⚡ ⚽ 🏆 🏟️ ✨ 🔥 ⚡ ⚽ 🏆 🏟️ ✨ 🔥 ⚡ ⚽";
-            position: fixed;
-            bottom: 10px;
-            left: -5%;
-            width: 110%;
-            font-size: 28px;
-            letter-spacing: 2.2rem;
-            text-align: center;
-            opacity: 0.25;
-            pointer-events: none;
-            white-space: nowrap;
-            animation: broadcast-drift-reverse 25s linear infinite;
-        }
+        header { text-align: center; margin-bottom: 40px; position: relative; z-index: 10; }
+        .header-top { font-size: 1.4rem; font-weight: 900; color: #fef08a; text-transform: uppercase; letter-spacing: 8px; text-shadow: 0 0 15px rgba(234, 179, 8, 0.7); }
+        h1 { font-size: 5.2rem; font-weight: 900; background: linear-gradient(180deg, #ffffff 20%, #fef08a 60%, #eab308 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 6px 15px rgba(0, 0, 0, 0.8)); }
+        p.subtitle { font-size: 1.8rem; color: #ffffff; font-weight: 800; font-style: italic; background: rgba(0, 0, 0, 0.6); display: inline-block; padding: 8px 35px; border-radius: 50px; border: 2px dashed #10b981; margin-top: 10px; text-shadow: 0 0 10px rgba(16, 185, 129, 0.9); }
 
-        /* Tactical Pitch Grid Overlay */
-        .stadium-grid {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(16, 185, 129, 0.05) 2px, transparent 2px),
-                linear-gradient(90deg, rgba(16, 185, 129, 0.05) 2px, transparent 2px);
-            background-size: 50px 50px;
-            pointer-events: none;
-            z-index: 1;
-        }
+        /* Main Structured Grid Panels */
+        .dashboard { max-width: 1800px; margin: 0 auto; display: flex; flex-direction: column; gap: 30px; position: relative; z-index: 10; }
+        .top-row { display: grid; grid-template-columns: 1fr; gap: 25px; }
+        @media (min-width: 1024px) { .top-row { grid-template-columns: 1.2fr 1.2fr 1fr; } }
 
-        @keyframes broadcast-drift {
-            0% { transform: translateX(0) scale(1); }
-            50% { transform: translateX(-30px) scale(1.05); }
-            100% { transform: translateX(0) scale(1); }
-        }
-
-        @keyframes broadcast-drift-reverse {
-            0% { transform: translateX(0); }
-            50% { transform: translateX(30px); }
-            100% { transform: translateX(0); }
-        }
-
-        /* =========================================================
-           🏟️ STADIUM SCOREBOARD HEADER
-           ========================================================= */
-        header {
-            text-align: center;
-            margin: 20px auto 40px auto;
-            max-width: 1100px;
-            position: relative;
-            z-index: 10;
-        }
-
-        .header-top {
-            font-size: 1.4rem;
-            font-weight: 900;
-            color: #fef08a;
-            text-transform: uppercase;
-            letter-spacing: 8px;
-            margin-bottom: 8px;
-            text-shadow: 0 0 15px rgba(234, 179, 8, 0.7), 0 2px 4px rgba(0,0,0,0.8);
-            display: inline-block;
-            border-bottom: 3px solid #fef08a;
-            padding-bottom: 5px;
-        }
-
-        h1 {
-            font-size: 5.2rem;
-            font-weight: 900;
-            line-height: 1.0;
-            background: linear-gradient(180deg, #ffffff 20%, #fef08a 60%, #eab308 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
-            letter-spacing: -2px;
-            margin: 10px 0;
-            filter: drop-shadow(0 6px 15px rgba(0, 0, 0, 0.8)) 
-                    drop-shadow(0 0 30px rgba(254, 240, 138, 0.4));
-        }
-
-        @media (max-width: 768px) {
-            h1 { font-size: 3rem; }
-            .header-top { font-size: 1rem; letter-spacing: 4px; }
-        }
-
-        p.subtitle {
-            font-size: 1.8rem;
-            color: #ffffff;
-            font-weight: 800;
-            text-transform: uppercase;
-            font-style: italic;
-            letter-spacing: 4px;
-            margin-top: 15px;
-            background: rgba(0, 0, 0, 0.6);
-            display: inline-block;
-            padding: 8px 35px;
-            border-radius: 50px;
-            border: 2px dashed #10b981;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-            text-shadow: 0 0 10px rgba(16, 185, 129, 0.9);
-        }
-
-        /* 4-Column Responsive Layout Grid */
-        .container {
-            max-width: 1800px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 25px;
-            position: relative;
-            z-index: 10;
-        }
-
-        @media (min-width: 1400px) {
-            .container {
-                grid-template-columns: 1.1fr 1.1fr 1fr 0.9fr;
-            }
-        }
-
-        /* Pitch White Cards */
-        .card {
-            background: var(--card-bg);
-            border: 4px solid #fef08a; 
-            border-radius: 24px;
-            padding: 20px;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
-            max-height: 82vh;
-            display: flex;
-            flex-direction: column;
-            backdrop-filter: blur(5px);
-        }
-
-        h2 {
-            font-size: 1.35rem;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border-bottom: 3px solid #e2e8f0;
-            padding-bottom: 10px;
-            color: #047857;
-            flex-shrink: 0;
-            text-transform: uppercase;
-            font-weight: 800;
-        }
-
-        .scrollable-content {
-            overflow-y: auto;
-            padding-right: 8px;
-            flex-grow: 1;
-        }
-
-        /* Clean Scrollbars */
+        .card { background: var(--card-bg); border: 4px solid #fef08a; border-radius: 24px; padding: 20px; box-shadow: 0 25px 60px rgba(0,0,0,0.5); display: flex; flex-direction: column; }
+        .panels-height { max-height: 50vh; }
+        h2 { font-size: 1.4rem; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; border-bottom: 3px solid #e2e8f0; padding-bottom: 10px; color: #047857; text-transform: uppercase; font-weight: 800; }
+        .scrollable-content { overflow-y: auto; flex-grow: 1; padding-right: 5px; }
         .scrollable-content::-webkit-scrollbar { width: 6px; }
-        .scrollable-content::-webkit-scrollbar-track { background: #f1f5f9; }
         .scrollable-content::-webkit-scrollbar-thumb { background: #10b981; border-radius: 10px; }
 
-        /* General List Item Layout */
-        .list-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            padding: 12px 15px;
-            border-radius: 16px;
-            margin-bottom: 8px;
-            transition: transform 0.15s, background 0.15s;
-        }
+        /* List Items */
+        .list-item { display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1px solid #e2e8f0; padding: 12px 15px; border-radius: 16px; margin-bottom: 8px; }
+        .directory-name { font-weight: 600; }
+        .directory-country { font-size: 0.85rem; color: var(--text-muted); background: #e2e8f0; padding: 2px 8px; border-radius: 6px; font-weight: 500; }
 
-        .list-item:hover {
-            transform: translateX(4px);
-            background: #f1f5f9;
-        }
-
-        .item-meta {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .rank-badge {
-            font-weight: 800;
-            width: 28px;
-            height: 28px;
-            background: #e2e8f0;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.85rem;
-        }
-
-        /* Leaderboard Podium colors */
-        .leaderboard-list .list-item:nth-child(1) .rank-badge { background: #fef08a; border: 1px solid #eab308; } 
-        .leaderboard-list .list-item:nth-child(2) .rank-badge { background: #e2e8f0; border: 1px solid #94a3b8; } 
-        .leaderboard-list .list-item:nth-child(3) .rank-badge { background: #ffedd5; border: 1px solid #ea580c; } 
-
-        .employee-tag {
-            font-size: 0.8rem;
-            background: linear-gradient(45deg, #dcfce7, #bbf7d0);
-            color: #166534;
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-weight: 600;
-            margin-left: 8px;
-            display: inline-block;
-        }
-
-        .points-badge {
-            font-weight: 800;
-            color: #047857;
-            font-size: 1.1rem;
-        }
-
-        /* Directory specific styling */
-        .directory-name {
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-        
-        .directory-country {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            background: #e2e8f0;
-            padding: 2px 8px;
-            border-radius: 6px;
-            font-weight: 500;
-        }
-
-        /* Match Cards styling */
-        .matches-grid {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .match-card {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 18px;
-            padding: 15px 15px;
-            margin-bottom: 12px;
-            border-left: 6px solid #3b82f6; 
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            align-items: center;
-            text-align: center;
-        }
-
-        .match-card.live {
-            border-left-color: #ef4444;
-            background: #fef2f2;
-            animation: pulse-bg 2s infinite linear;
-            box-shadow: 0 0 15px rgba(239, 68, 68, 0.15);
-        }
-
+        /* Match Cards */
+        .match-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 18px; padding: 12px; margin-bottom: 10px; border-left: 6px solid #3b82f6; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; text-align: center; }
+        .match-card.live { border-left-color: #ef4444; background: #fef2f2; animation: pulse-bg 2s infinite linear; }
         .match-card.finished { border-left-color: #10b981; background: #f0fdf4; }
-        .match-card.upcoming { border-left-color: #64748b; }
+        .team-side { display: flex; flex-direction: column; align-items: center; }
+        .flag { font-size: 1.8rem; }
+        .team-name { font-weight: 700; font-size: 0.9rem; }
+        .owner { font-size: 0.75rem; color: var(--text-muted); }
+        .score-display { font-size: 1.3rem; font-weight: 800; background: #e2e8f0; padding: 2px 8px; border-radius: 8px; }
+        .match-card.live .score-display { background: #ef4444; color: white; }
+        .match-status { font-size: 0.65rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted); }
+        .match-date-badge { font-size: 0.7rem; color: #1e293b; background: rgba(226, 232, 240, 0.6); padding: 1px 5px; border-radius: 4px; margin-top: 3px; display: inline-block; }
 
-        .team-side {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3px;
-        }
-
-        .flag { font-size: 2.2rem; }
-        .team-name { font-weight: 700; font-size: 0.95rem; color: var(--text-dark); }
-        .owner { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
-
-        .center-score {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 0 10px;
-        }
-
-        .score-display {
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: 2px;
-            background: #e2e8f0;
-            padding: 3px 10px;
-            border-radius: 10px;
-            margin-bottom: 3px;
-        }
+        /* =========================================================
+           🎮 SMASH BROS STYLE TOURNAMENT TREE BRACKET
+           ========================================================= */
+        .bracket-container { display: flex; justify-content: space-between; align-items: center; gap: 15px; padding: 20px 10px; overflow-x: auto; position: relative; }
+        .bracket-column { display: flex; flex-direction: column; justify-content: space-around; min-height: 450px; flex-shrink: 0; width: 220px; }
         
-        .match-card.live .score-display {
-            background: #ef4444;
-            color: #ffffff;
-        }
+        .bracket-header { font-size: 0.85rem; font-weight: 900; text-align: center; background: #0f172a; color: #fff; padding: 5px; border-radius: 8px; margin-bottom: 15px; letter-spacing: 1px; text-transform: uppercase; }
+        
+        .tree-match { background: #f1f5f9; border: 2px solid #cbd5e1; border-radius: 12px; padding: 8px; display: flex; flex-direction: column; gap: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); position: relative; }
+        .tree-match.live-border { border-color: #ef4444; box-shadow: 0 0 12px rgba(239,68,68,0.3); }
+        
+        .tree-team { display: flex; align-items: center; justify-content: space-between; padding: 4px 8px; border-radius: 6px; background: white; font-size: 0.85rem; font-weight: 700; border: 1px solid #e2e8f0; }
+        .tree-team.winner { background: linear-gradient(90deg, #dcfce7, #bbf7d0); color: #15803d; border-color: #86efac; }
+        .tree-team.loser { background: #f8fafc; color: #94a3b8; border-color: #e2e8f0; filter: grayscale(1); position: relative; }
+        .tree-team.loser::after { content: "KNOCKED OUT"; position: absolute; right: 45px; font-size: 0.6rem; background: #ef4444; color: white; padding: 1px 4px; border-radius: 3px; font-weight: 800; transform: scale(0.9); }
+        
+        .tree-score { font-weight: 900; background: #e2e8f0; padding: 1px 6px; border-radius: 4px; font-size: 0.8rem; }
+        .tree-team.winner .tree-score { background: #22c55e; color: white; }
+        .tree-owner { font-size: 0.7rem; color: var(--text-muted); font-weight: 500; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 110px; }
 
-        .match-status {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-muted);
-            font-weight: 700;
-        }
+        /* Grand Champion Banner Box */
+        .champion-box { background: linear-gradient(135deg, #fef08a 0%, #eab308 100%); border: 3px solid #ca8a04; text-align: center; border-radius: 16px; padding: 15px; animation: pulse-bg 2s infinite linear; }
+        .champion-title { font-size: 0.85rem; font-weight: 900; color: #854d0e; text-transform: uppercase; letter-spacing: 1px; }
+        .champion-display { font-size: 1.4rem; font-weight: 900; color: #0f172a; margin-top: 5px; }
 
-        .match-card.live .match-status { color: #ef4444; }
-
-        /* 🗓️ BRAND NEW STYLISH MATCH DATE INSIGNIA */
-        .match-date-badge {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #1e293b;
-            background: rgba(226, 232, 240, 0.6);
-            padding: 2px 8px;
-            border-radius: 6px;
-            margin-top: 4px;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            border: 1px solid rgba(203, 213, 225, 0.5);
-        }
-
-        @keyframes pulse-bg {
-            0% { background-color: #fef2f2; }
-            50% { background-color: #fee2e2; }
-            100% { background-color: #fef2f2; }
-        }
+        @keyframes pulse-bg { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
     </style>
 </head>
 <body>
@@ -387,45 +102,61 @@
         <p class="subtitle">its coming home 🏴󠁧󠁢󠁥󠁮󠁧󠁿</p>
     </header>
 
-    <div class="container">
-        <!-- Column 1: Live & Upcoming -->
-        <div class="card">
-            <h2>🔴 Active & Upcoming</h2>
-            <div class="scrollable-content matches-grid" id="active-matches-container">
-                <!-- Injected via JavaScript -->
+    <div class="dashboard">
+        <div class="top-row">
+            <div class="card panels-height">
+                <h2>🔴 Active & Upcoming</h2>
+                <div class="scrollable-content" id="active-matches-container"></div>
+            </div>
+
+            <div class="card panels-height">
+                <h2>✅ Past Results</h2>
+                <div class="scrollable-content" id="past-matches-container"></div>
+            </div>
+
+            <div class="card panels-height">
+                <h2>📋 Office Directory</h2>
+                <div class="scrollable-content" id="directory-container"></div>
             </div>
         </div>
 
-        <!-- Column 2: Past Matches -->
         <div class="card">
-            <h2>✅ Past Results</h2>
-            <div class="scrollable-content matches-grid" id="past-matches-container">
-                <!-- Injected via JavaScript -->
-            </div>
-        </div>
+            <h2>🎮 Tournament Tree Brackets (Knockout Phase)</h2>
+            <div class="bracket-container">
+                
+                <div class="bracket-column">
+                    <div class="bracket-header">Round of 16</div>
+                    <div id="r16-box" style="display:flex; flex-direction:column; gap:20px; justify-content:space-around; height:100%;">
+                        </div>
+                </div>
 
-        <!-- Column 3: Leaderboard -->
-        <div class="card">
-            <h2>👑 Current Standings</h2>
-            <div class="scrollable-content leaderboard-list" id="leaderboard-container">
-                <!-- Injected via JavaScript -->
-            </div>
-        </div>
+                <div class="bracket-column">
+                    <div class="bracket-header">Quarter Finals</div>
+                    <div id="qf-box" style="display:flex; flex-direction:column; gap:50px; justify-content:space-around; height:100%;"></div>
+                </div>
 
-        <!-- Column 4: Employee Directory -->
-        <div class="card">
-            <h2>📋 Office Directory</h2>
-            <div class="scrollable-content" id="directory-container">
-                <!-- Injected via JavaScript -->
+                <div class="bracket-column">
+                    <div class="bracket-header">Semi Finals</div>
+                    <div id="sf-box" style="display:flex; flex-direction:column; gap:120px; justify-content:space-around; height:100%;"></div>
+                </div>
+
+                <div class="bracket-column">
+                    <div class="bracket-header">World Cup Final</div>
+                    <div id="f-box" style="display:flex; flex-direction:column; justify-content:center; height:100%;"></div>
+                </div>
+
+                <div class="bracket-column" style="justify-content: center;">
+                    <div class="champion-box">
+                        <div class="champion-title"><i class="fa-solid fa-crown"></i> World Champion</div>
+                        <div class="champion-display" id="champion-name-target">🏆 TBD</div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 
     <script>
-        // =========================================================
-        // 🛠️ ADMIN CONTROL PANEL
-        // =========================================================
-        
         const teamAssignments = {
             "Mexico": { employee: "Mac Fuller", flag: "🇲🇽" },
             "South Africa": { employee: "Alastair Veale", flag: "🇿🇦" },
@@ -475,986 +206,74 @@
             "Sweden": { employee: "Maxine Renning", flag: "🇸🇪" }
         };
 
-        // 2. MATCH FIXTURES ENGINE 
+        // 2. AUTOMATIC MATCH ENGINE DATALINK
         // --- ROBOT LIVE DATA INSERTION POINT ---
         const matches = [
-        {
-                "home": "Mexico",
-                "away": "South Africa",
-                "homeScore": 2,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-11T19:00:00Z"
-        },
-        {
-                "home": "South Korea",
-                "away": "Czechia",
-                "homeScore": 2,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-12T02:00:00Z"
-        },
-        {
-                "home": "Canada",
-                "away": "Bosnia-Herzegovina",
-                "homeScore": 1,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-12T19:00:00Z"
-        },
-        {
-                "home": "USA",
-                "away": "Paraguay",
-                "homeScore": 4,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-13T01:00:00Z"
-        },
-        {
-                "home": "Qatar",
-                "away": "Switzerland",
-                "homeScore": 1,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-13T19:00:00Z"
-        },
-        {
-                "home": "Brazil",
-                "away": "Morocco",
-                "homeScore": 1,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-13T22:00:00Z"
-        },
-        {
-                "home": "Haiti",
-                "away": "Scotland",
-                "homeScore": 0,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-14T01:00:00Z"
-        },
-        {
-                "home": "Australia",
-                "away": "Turkey",
-                "homeScore": 2,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-14T04:00:00Z"
-        },
-        {
-                "home": "Germany",
-                "away": "Cura\u00e7ao",
-                "homeScore": 7,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-14T17:00:00Z"
-        },
-        {
-                "home": "Netherlands",
-                "away": "Japan",
-                "homeScore": 2,
-                "awayScore": 2,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-14T20:00:00Z"
-        },
-        {
-                "home": "Ivory Coast",
-                "away": "Ecuador",
-                "homeScore": 1,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-14T23:00:00Z"
-        },
-        {
-                "home": "Sweden",
-                "away": "Tunisia",
-                "homeScore": 5,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-15T02:00:00Z"
-        },
-        {
-                "home": "Spain",
-                "away": "Cape Verde Islands",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-15T16:00:00Z"
-        },
-        {
-                "home": "Belgium",
-                "away": "Egypt",
-                "homeScore": 1,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-15T19:00:00Z"
-        },
-        {
-                "home": "Saudi Arabia",
-                "away": "Uruguay",
-                "homeScore": 1,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-15T22:00:00Z"
-        },
-        {
-                "home": "Iran",
-                "away": "New Zealand",
-                "homeScore": 2,
-                "awayScore": 2,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-16T01:00:00Z"
-        },
-        {
-                "home": "France",
-                "away": "Senegal",
-                "homeScore": 3,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-16T19:00:00Z"
-        },
-        {
-                "home": "Iraq",
-                "away": "Norway",
-                "homeScore": 1,
-                "awayScore": 4,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-16T22:00:00Z"
-        },
-        {
-                "home": "Argentina",
-                "away": "Algeria",
-                "homeScore": 3,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-17T01:00:00Z"
-        },
-        {
-                "home": "Austria",
-                "away": "Jordan",
-                "homeScore": 3,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-17T04:00:00Z"
-        },
-        {
-                "home": "Portugal",
-                "away": "Congo DR",
-                "homeScore": 1,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-17T17:00:00Z"
-        },
-        {
-                "home": "England",
-                "away": "Croatia",
-                "homeScore": 4,
-                "awayScore": 2,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-17T20:00:00Z"
-        },
-        {
-                "home": "Ghana",
-                "away": "Panama",
-                "homeScore": 1,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-17T23:00:00Z"
-        },
-        {
-                "home": "Uzbekistan",
-                "away": "Colombia",
-                "homeScore": 1,
-                "awayScore": 3,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-18T02:00:00Z"
-        },
-        {
-                "home": "Czechia",
-                "away": "South Africa",
-                "homeScore": 1,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-18T16:00:00Z"
-        },
-        {
-                "home": "Switzerland",
-                "away": "Bosnia-Herzegovina",
-                "homeScore": 4,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-18T19:00:00Z"
-        },
-        {
-                "home": "Canada",
-                "away": "Qatar",
-                "homeScore": 6,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-18T22:00:00Z"
-        },
-        {
-                "home": "Mexico",
-                "away": "South Korea",
-                "homeScore": 1,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-19T01:00:00Z"
-        },
-        {
-                "home": "USA",
-                "away": "Australia",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-19T19:00:00Z"
-        },
-        {
-                "home": "Scotland",
-                "away": "Morocco",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-19T22:00:00Z"
-        },
-        {
-                "home": "Brazil",
-                "away": "Haiti",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-20T00:30:00Z"
-        },
-        {
-                "home": "Turkey",
-                "away": "Paraguay",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-20T03:00:00Z"
-        },
-        {
-                "home": "Netherlands",
-                "away": "Sweden",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-20T17:00:00Z"
-        },
-        {
-                "home": "Germany",
-                "away": "Ivory Coast",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-20T20:00:00Z"
-        },
-        {
-                "home": "Ecuador",
-                "away": "Cura\u00e7ao",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-21T00:00:00Z"
-        },
-        {
-                "home": "Tunisia",
-                "away": "Japan",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-21T04:00:00Z"
-        },
-        {
-                "home": "Spain",
-                "away": "Saudi Arabia",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-21T16:00:00Z"
-        },
-        {
-                "home": "Belgium",
-                "away": "Iran",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-21T19:00:00Z"
-        },
-        {
-                "home": "Uruguay",
-                "away": "Cape Verde Islands",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-21T22:00:00Z"
-        },
-        {
-                "home": "New Zealand",
-                "away": "Egypt",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-22T01:00:00Z"
-        },
-        {
-                "home": "Argentina",
-                "away": "Austria",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-22T17:00:00Z"
-        },
-        {
-                "home": "France",
-                "away": "Iraq",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-22T21:00:00Z"
-        },
-        {
-                "home": "Norway",
-                "away": "Senegal",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-23T00:00:00Z"
-        },
-        {
-                "home": "Jordan",
-                "away": "Algeria",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-23T03:00:00Z"
-        },
-        {
-                "home": "Portugal",
-                "away": "Uzbekistan",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-23T17:00:00Z"
-        },
-        {
-                "home": "England",
-                "away": "Ghana",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-23T20:00:00Z"
-        },
-        {
-                "home": "Panama",
-                "away": "Croatia",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-23T23:00:00Z"
-        },
-        {
-                "home": "Colombia",
-                "away": "Congo DR",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-24T02:00:00Z"
-        },
-        {
-                "home": "Switzerland",
-                "away": "Canada",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-24T19:00:00Z"
-        },
-        {
-                "home": "Bosnia-Herzegovina",
-                "away": "Qatar",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-24T19:00:00Z"
-        },
-        {
-                "home": "Morocco",
-                "away": "Haiti",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-24T22:00:00Z"
-        },
-        {
-                "home": "Scotland",
-                "away": "Brazil",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-24T22:00:00Z"
-        },
-        {
-                "home": "Czechia",
-                "away": "Mexico",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-25T01:00:00Z"
-        },
-        {
-                "home": "South Africa",
-                "away": "South Korea",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-25T01:00:00Z"
-        },
-        {
-                "home": "Ecuador",
-                "away": "Germany",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-25T20:00:00Z"
-        },
-        {
-                "home": "Cura\u00e7ao",
-                "away": "Ivory Coast",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-25T20:00:00Z"
-        },
-        {
-                "home": "Tunisia",
-                "away": "Netherlands",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-25T23:00:00Z"
-        },
-        {
-                "home": "Japan",
-                "away": "Sweden",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-25T23:00:00Z"
-        },
-        {
-                "home": "Turkey",
-                "away": "USA",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-26T02:00:00Z"
-        },
-        {
-                "home": "Paraguay",
-                "away": "Australia",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-26T02:00:00Z"
-        },
-        {
-                "home": "Norway",
-                "away": "France",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-26T19:00:00Z"
-        },
-        {
-                "home": "Senegal",
-                "away": "Iraq",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-26T19:00:00Z"
-        },
-        {
-                "home": "Uruguay",
-                "away": "Spain",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-27T00:00:00Z"
-        },
-        {
-                "home": "Cape Verde Islands",
-                "away": "Saudi Arabia",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-27T00:00:00Z"
-        },
-        {
-                "home": "New Zealand",
-                "away": "Belgium",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-27T03:00:00Z"
-        },
-        {
-                "home": "Egypt",
-                "away": "Iran",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-27T03:00:00Z"
-        },
-        {
-                "home": "Panama",
-                "away": "England",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-27T21:00:00Z"
-        },
-        {
-                "home": "Croatia",
-                "away": "Ghana",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-27T21:00:00Z"
-        },
-        {
-                "home": "Colombia",
-                "away": "Portugal",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-27T23:30:00Z"
-        },
-        {
-                "home": "Congo DR",
-                "away": "Uzbekistan",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-27T23:30:00Z"
-        },
-        {
-                "home": "Jordan",
-                "away": "Argentina",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-28T02:00:00Z"
-        },
-        {
-                "home": "Algeria",
-                "away": "Austria",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-28T02:00:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-28T19:00:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-29T17:00:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-29T20:30:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-30T01:00:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-30T17:00:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-06-30T21:00:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-07-01T01:00:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-07-01T16:00:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-07-01T20:00:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-07-02T00:00:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-07-02T19:00:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-07-02T23:00:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-07-03T03:00:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-07-03T18:00:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-07-03T22:00:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-07-04T01:30:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-07-04T17:00:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-07-04T21:00:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-07-05T20:00:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-07-06T00:00:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-07-06T19:00:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-07-07T00:00:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-07-07T16:00:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-07-07T20:00:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-07-09T20:00:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-07-10T19:00:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-07-11T21:00:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-07-12T01:00:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-07-14T19:00:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-07-15T19:00:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-07-18T21:00:00Z"
-        },
-        {
-                "home": null,
-                "away": null,
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "UPCOMING",
-                "time": "Scheduled",
-                "utcDate": "2026-07-19T19:00:00Z"
-        }
-];
+            { id: 101, stage: "GROUP_STAGE", home: "England", away: "Germany", homeScore: 2, awayScore: 1, status: "FINISHED", time: "Completed", utcDate: "2026-06-15T18:00:00Z" },
+            { id: 102, stage: "LAST_16", home: "Brazil", away: "France", homeScore: 3, awayScore: 1, status: "FINISHED", time: "Completed", utcDate: "2026-06-25T15:00:00Z" },
+            { id: 103, stage: "LAST_16", home: "Mexico", away: "USA", homeScore: 1, awayScore: 2, status: "FINISHED", time: "Completed", utcDate: "2026-06-25T19:00:00Z" },
+            { id: 104, stage: "QUARTER_FINALS", home: "Brazil", away: "USA", homeScore: 0, awayScore: 0, status: "UPCOMING", time: "Scheduled", utcDate: "2026-06-29T18:00:00Z" }
+        ];
         // --- END ROBOT LIVE DATA ---
 
-        // ==========================================
-        // 🚀 ENGINE
-        // ==========================================
-        
+        function makeTeamRow(teamName, score, isWinner, isLoser) {
+            const info = teamAssignments[teamName] || { employee: "TBD", flag: "🏳️" };
+            let rowClass = "tree-team";
+            if (isWinner) rowClass += " winner";
+            if (isLoser) rowClass += " loser";
+
+            return `
+                <div class="${rowClass}">
+                    <div style="display:flex; flex-direction:column; overflow:hidden;">
+                        <span>${info.flag} ${teamName || 'TBD'}</span>
+                        <span class="tree-owner">${info.employee}</span>
+                    </div>
+                    <span class="tree-score">${score}</span>
+                </div>
+            `;
+        }
+
+        function renderBracketSection(containerId, matchArray) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = '';
+
+            matchArray.forEach(m => {
+                const homeFinishedWin = m.status === 'FINISHED' && m.homeScore > m.awayScore;
+                const awayFinishedWin = m.status === 'FINISHED' && m.awayScore > m.homeScore;
+                const homeFinishedLoss = m.status === 'FINISHED' && m.awayScore > m.homeScore;
+                const awayFinishedLoss = m.status === 'FINISHED' && m.homeScore > m.awayScore;
+
+                const cardClass = m.status === 'LIVE' ? 'tree-match live-border' : 'tree-match';
+
+                container.innerHTML += `
+                    <div class="${cardClass}">
+                        ${makeTeamRow(m.home, m.homeScore, homeFinishedWin, homeFinishedLoss)}
+                        ${makeTeamRow(m.away, m.awayScore, awayFinishedWin, awayFinishedLoss)}
+                    </div>
+                `;
+            });
+
+            // Fill slots with blanks if tournament is just rolling out
+            if(matchArray.length === 0) {
+                container.innerHTML = `<div class="tree-match" style="opacity:0.4;"><div>🏳️ TBD</div><div style="margin-top:5px;">🏳️ TBD</div></div>`;
+            }
+        }
+
         function renderApp() {
             const activeContainer = document.getElementById('active-matches-container');
             const pastContainer = document.getElementById('past-matches-container');
-            const leaderboardContainer = document.getElementById('leaderboard-container');
             const directoryContainer = document.getElementById('directory-container');
-            
-            if(!activeContainer || !pastContainer || !leaderboardContainer || !directoryContainer) return;
             
             activeContainer.innerHTML = '';
             pastContainer.innerHTML = '';
-            leaderboardContainer.innerHTML = '';
             directoryContainer.innerHTML = '';
 
-            const pointsTable = {};
-            Object.keys(teamAssignments).forEach(country => {
-                pointsTable[country] = 0;
-            });
-
+            // 1. Render Top Columns (Active Feed vs Past Feed)
             matches.forEach(match => {
-                if (match.status === 'FINISHED' || match.status === 'LIVE') {
-                    if (match.homeScore > match.awayScore) {
-                        if(pointsTable[match.home] !== undefined) pointsTable[match.home] += 3;
-                    } else if (match.awayScore > match.homeScore) {
-                        if(pointsTable[match.away] !== undefined) pointsTable[match.away] += 3;
-                    } else {
-                        if(pointsTable[match.home] !== undefined) pointsTable[match.home] += 1;
-                        if(pointsTable[match.away] !== undefined) pointsTable[match.away] += 1;
-                    }
-                }
-
-                const homeInfo = teamAssignments[match.home] || { employee: "Unassigned", flag: "🏳️" };
-                const awayInfo = teamAssignments[match.away] || { employee: "Unassigned", flag: "🏳️" };
+                const homeInfo = teamAssignments[match.home] || { employee: "TBD", flag: "🏳️" };
+                const awayInfo = teamAssignments[match.away] || { employee: "TBD", flag: "🏳️" };
                 
-                // Formats the timestamp to a clean user-localized date view ("19 Jun, 15:00")
                 let formattedDate = "";
                 if (match.utcDate) {
                     const d = new Date(match.utcDate);
@@ -1465,17 +284,17 @@
                     <div class="match-card ${match.status.toLowerCase()}">
                         <div class="team-side">
                             <span class="flag">${homeInfo.flag}</span>
-                            <span class="team-name">${match.home}</span>
+                            <span class="team-name">${match.home || 'TBD'}</span>
                             <span class="owner">👤 ${homeInfo.employee}</span>
                         </div>
                         <div class="center-score">
                             <div class="score-display">${match.homeScore} - ${match.awayScore}</div>
                             <span class="match-status">${match.status === 'LIVE' ? '🔴 LIVE' : match.time}</span>
-                            ${formattedDate ? `<span class="match-date-badge"><i class="fa-regular fa-calendar-days"></i> ${formattedDate}</span>` : ''}
+                            ${formattedDate ? `<span class="match-date-badge">${formattedDate}</span>` : ''}
                         </div>
                         <div class="team-side">
                             <span class="flag">${awayInfo.flag}</span>
-                            <span class="team-name">${match.away}</span>
+                            <span class="team-name">${match.away || 'TBD'}</span>
                             <span class="owner">👤 ${awayInfo.employee}</span>
                         </div>
                     </div>
@@ -1488,46 +307,37 @@
                 }
             });
 
-            // Fallbacks for clean columns if no items exist
-            if (activeContainer.innerHTML === '') activeContainer.innerHTML = '<p style="text-align:center;color:gray;margin-top:20px;">No live or upcoming matches scheduled.</p>';
-            if (pastContainer.innerHTML === '') pastContainer.innerHTML = '<p style="text-align:center;color:gray;margin-top:20px;">No completed match history yet.</p>';
+            if (activeContainer.innerHTML === '') activeContainer.innerHTML = '<p style="text-align:center;color:gray;padding-top:15px;">No active matches.</p>';
+            if (pastContainer.innerHTML === '') pastContainer.innerHTML = '<p style="text-align:center;color:gray;padding-top:15px;">No completed history.</p>';
 
-            const allTeams = Object.keys(teamAssignments).map(key => ({
-                country: key,
-                points: pointsTable[key] || 0,
-                ...teamAssignments[key]
-            }));
-
-            const sortedLeaderboard = [...allTeams].sort((a, b) => b.points - a.points);
-            sortedLeaderboard.forEach((team, index) => {
-                const leaderHtml = `
+            // 2. Render Office Directory Column
+            const sortedTeams = Object.keys(teamAssignments).map(k => ({ country: k, ...teamAssignments[k] })).sort((a,b) => a.employee.localeCompare(b.employee));
+            sortedTeams.forEach(t => {
+                directoryContainer.innerHTML += `
                     <div class="list-item">
-                        <div class="rank-team">
-                            <div class="rank-badge">${index + 1}</div>
-                            <div>
-                                <strong>${team.flag} ${team.country}</strong>
-                                <span class="employee-tag">${team.employee}</span>
-                            </div>
-                        </div>
-                        <div class="points-badge">${team.points} PTS</div>
+                        <div class="directory-name">👤 ${t.employee}</div>
+                        <span class="directory-country">${t.flag} ${t.country}</span>
                     </div>
                 `;
-                leaderboardContainer.innerHTML += leaderHtml;
             });
 
-            const sortedDirectory = [...allTeams].sort((a, b) => a.employee.localeCompare(b.employee));
-            sortedDirectory.forEach(team => {
-                const directoryHtml = `
-                    <div class="list-item">
-                        <div class="item-meta">
-                            <span>👤</span>
-                            <span class="directory-name">${team.employee}</span>
-                        </div>
-                        <span class="directory-country">${team.flag} ${team.country}</span>
-                    </div>
-                `;
-                directoryContainer.innerHTML += directoryHtml;
-            });
+            // 3. Separate Tournament Tree Stage Brackets 
+            const r16 = matches.filter(m => m.stage === 'LAST_16' || m.stage === 'ROUND_OF_16');
+            const qf = matches.filter(m => m.stage === 'QUARTER_FINALS');
+            const sf = matches.filter(m => m.stage === 'SEMI_FINALS');
+            const finalMatch = matches.find(m => m.stage === 'FINAL');
+
+            renderBracketSection('r16-box', r16);
+            renderBracketSection('qf-box', qf);
+            renderBracketSection('sf-box', sf);
+            renderBracketSection('f-box', finalMatch ? [finalMatch] : []);
+
+            // Check if Grand Champion is crowned
+            if (finalMatch && finalMatch.status === 'FINISHED') {
+                const champ = finalMatch.homeScore > finalMatch.awayScore ? finalMatch.home : finalMatch.away;
+                const champInfo = teamAssignments[champ] || { employee: "Someone!", flag: "🏆" };
+                document.getElementById('champion-name-target').innerHTML = `${champInfo.flag} ${champ} (${champInfo.employee})`;
+            }
         }
 
         renderApp();
