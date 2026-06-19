@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🏆 COMPANY WORLD CUP TRACKER ⚽</title>
-    <!-- Modern Google Fonts & FontAwesome Icons -->
+    <title>🏆 CREATE ADVERTISING WORLD CUP TRACKER ⚽</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --primary: #00f2fe;
-            --secondary: #4facfe;
-            --dark: #0f172a;
-            --card-bg: rgba(30, 41, 59, 0.7);
-            --text: #f8fafc;
+            --primary: #10b981; /* Football Green */
+            --secondary: #059669; 
+            --pitch-bg: linear-gradient(135deg, #115e59 0%, #047857 50%, #065f46 100%);
+            --card-bg: #ffffff; /* Clean White Boxes */
+            --text-dark: #0f172a;
+            --text-muted: #475569;
         }
 
         * {
@@ -25,13 +25,14 @@
         }
 
         body {
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-            color: var(--text);
+            background: var(--pitch-bg);
+            color: var(--text-dark);
             min-height: 100vh;
             padding: 20px;
             overflow-x: hidden;
         }
 
+        /* Stadium Vibes Overlay */
         body::before {
             content: "⚽ ✨ 🏆 🎉 🏟️ 🌟";
             position: fixed;
@@ -41,7 +42,7 @@
             font-size: 24px;
             letter-spacing: 2rem;
             text-align: center;
-            opacity: 0.15;
+            opacity: 0.2;
             pointer-events: none;
             white-space: nowrap;
         }
@@ -49,24 +50,26 @@
         header {
             text-align: center;
             margin: 40px auto;
-            max-width: 800px;
+            max-width: 900px;
         }
 
         h1 {
             font-size: 3rem;
             font-weight: 800;
-            background: linear-gradient(45deg, #ff007f, #7928ca, #00f2fe);
+            background: linear-gradient(45deg, #ffffff, #fef08a, #ffffff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-transform: uppercase;
             letter-spacing: 2px;
             margin-bottom: 10px;
-            animation: glow 3s ease-in-out infinite alternate;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
         p.subtitle {
             font-size: 1.2rem;
-            color: #94a3b8;
+            color: #f0fdf4;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
         .container {
@@ -83,13 +86,13 @@
             }
         }
 
+        /* Fresh White Pitch Cards */
         .card {
             background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 3px solid #fef08a; /* Golden boundary outline */
             border-radius: 24px;
             padding: 25px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
             max-height: 85vh;
             display: flex;
             flex-direction: column;
@@ -101,9 +104,9 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            border-bottom: 2px solid rgba(255,255,255,0.1);
+            border-bottom: 3px solid #f0fdf4;
             padding-bottom: 10px;
-            color: #00f2fe;
+            color: var(--secondary);
             flex-shrink: 0;
         }
 
@@ -113,10 +116,10 @@
             flex-grow: 1;
         }
 
-        /* Scrollbar styles */
+        /* Clean Scrollbar */
         .scrollable-content::-webkit-scrollbar { width: 6px; }
-        .scrollable-content::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
-        .scrollable-content::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 10px; }
+        .scrollable-content::-webkit-scrollbar-track { background: #f1f5f9; }
+        .scrollable-content::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
 
         /* Leaderboard styling */
         .leaderboard-list {
@@ -129,15 +132,17 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: rgba(255,255,255,0.05);
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
             padding: 12px 18px;
             border-radius: 16px;
-            transition: transform 0.2s, background 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .leader-item:hover {
             transform: translateX(5px);
-            background: rgba(255,255,255,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            background: #f1f5f9;
         }
 
         .rank-team {
@@ -150,7 +155,8 @@
             font-weight: 800;
             width: 28px;
             height: 28px;
-            background: #334155;
+            background: #e2e8f0;
+            color: var(--text-dark);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -158,15 +164,16 @@
             font-size: 0.85rem;
         }
 
-        .leader-item:nth-child(1) .rank-badge { background: #f59e0b; color: #0f172a; }
-        .leader-item:nth-child(2) .rank-badge { background: #cbd5e1; color: #0f172a; }
-        .leader-item:nth-child(3) .rank-badge { background: #b45309; color: #f8fafc; }
+        /* Trophy Ranks color tweaks */
+        .leader-item:nth-child(1) .rank-badge { background: #fef08a; border: 1px solid #eab308; } 
+        .leader-item:nth-child(2) .rank-badge { background: #e2e8f0; border: 1px solid #94a3b8; } 
+        .leader-item:nth-child(3) .rank-badge { background: #ffedd5; border: 1px solid #ea580c; } 
 
         .employee-tag {
             font-size: 0.8rem;
-            background: linear-gradient(45deg, #4facfe, #00f2fe);
-            color: #0f172a;
-            padding: 1px 8px;
+            background: linear-gradient(45deg, #dcfce7, #bbf7d0);
+            color: #166534;
+            padding: 2px 10px;
             border-radius: 20px;
             font-weight: 600;
             margin-left: 8px;
@@ -175,7 +182,7 @@
 
         .points-badge {
             font-weight: 800;
-            color: #10b981;
+            color: var(--secondary);
             font-size: 1.1rem;
         }
 
@@ -187,10 +194,11 @@
         }
 
         .match-card {
-            background: rgba(15, 23, 42, 0.6);
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
             border-radius: 18px;
             padding: 15px 20px;
-            border-left: 6px solid #4facfe;
+            border-left: 6px solid #3b82f6; /* Blue Future Fixture bar */
             display: grid;
             grid-template-columns: 1fr auto 1fr;
             align-items: center;
@@ -198,8 +206,13 @@
         }
 
         .match-card.live {
-            border-left-color: #ef4444;
-            animation: pulse-border 2s infinite;
+            border-left-color: #ef4444; /* Red Live Bar */
+            background: #fef2f2;
+            animation: pulse-bg 2s infinite linear;
+        }
+
+        .match-card.finished {
+            border-left-color: #10b981; /* Green Finished Bar */
         }
 
         .match-card.upcoming {
@@ -214,8 +227,8 @@
         }
 
         .flag { font-size: 2.2rem; }
-        .team-name { font-weight: 600; font-size: 1rem; }
-        .owner { font-size: 0.8rem; color: #94a3b8; }
+        .team-name { font-weight: 600; font-size: 1rem; color: var(--text-dark); }
+        .owner { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
 
         .center-score {
             display: flex;
@@ -229,7 +242,8 @@
             font-size: 1.6rem;
             font-weight: 800;
             letter-spacing: 4px;
-            background: rgba(255,255,255,0.1);
+            background: #e2e8f0;
+            color: var(--text-dark);
             padding: 3px 12px;
             border-radius: 10px;
             margin-bottom: 3px;
@@ -239,46 +253,37 @@
             font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: #94a3b8;
+            color: var(--text-muted);
             font-weight: 600;
         }
 
         .match-card.live .match-status { color: #ef4444; }
 
-        @keyframes glow {
-            from { text-shadow: 0 0 10px rgba(255,0,127,0.3); }
-            to { text-shadow: 0 0 20px rgba(0,242,254,0.5); }
-        }
-
-        @keyframes pulse-border {
-            0% { border-left-color: #ef4444; }
-            50% { border-left-color: rgba(239, 68, 68, 0.2); }
-            100% { border-left-color: #ef4444; }
+        @keyframes pulse-bg {
+            0% { background-color: #fef2f2; }
+            50% { background-color: #fee2e2; }
+            100% { background-color: #fef2f2; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>🏆 Office World Cup Tracker ⚽</h1>
+        <h1>🏆 CREATE ADVERTISING WORLD CUP TRACKER ⚽</h1>
         <p class="subtitle">✨ Real-time Leaderboard & Office Sweepstakes Hub ✨</p>
     </header>
 
     <div class="container">
-        <!-- Main Matches column -->
         <div class="card">
             <h2><i class="fa-solid fa-stadium"></i> 🏟️ Fixtures & Live Scores</h2>
             <div class="scrollable-content matches-grid" id="matches-container">
-                <!-- Injected dynamically by JavaScript -->
-            </div>
+                </div>
         </div>
 
-        <!-- Sidebar Leaderboard column -->
         <div class="card">
             <h2><i class="fa-solid fa-trophy"></i> 👑 Current Leaderboard</h2>
             <div class="scrollable-content leaderboard-list" id="leaderboard-container">
-                <!-- Injected dynamically by JavaScript -->
-            </div>
+                </div>
         </div>
     </div>
 
@@ -358,13 +363,11 @@
             matchesContainer.innerHTML = '';
             leaderboardContainer.innerHTML = '';
 
-            // Initialize total points calculated array
             const pointsTable = {};
             Object.keys(teamAssignments).forEach(country => {
                 pointsTable[country] = 0;
             });
 
-            // Parse match scores to dynamically award points
             matches.forEach(match => {
                 if (match.status === 'FINISHED' || match.status === 'LIVE') {
                     if (match.homeScore > match.awayScore) {
@@ -377,7 +380,6 @@
                     }
                 }
 
-                // Render Match Element
                 const homeInfo = teamAssignments[match.home] || { employee: "Unassigned", flag: "🏳️" };
                 const awayInfo = teamAssignments[match.away] || { employee: "Unassigned", flag: "🏳️" };
                 
@@ -402,7 +404,6 @@
                 matchesContainer.innerHTML += matchHtml;
             });
 
-            // Sort and Render Leaderboard
             const sortedTeams = Object.keys(teamAssignments).map(key => ({
                 country: key,
                 points: pointsTable[key] || 0,
