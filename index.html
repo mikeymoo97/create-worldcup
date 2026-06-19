@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🏆 CREATE ADVERTISING WORLD CUP TRACKER ⚽</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght=400;600;800&display=swap" rel="stylesheet">
+    <!-- Fixed Google Fonts Link & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -302,22 +303,28 @@
     </header>
 
     <div class="container">
+        <!-- 1st Column: Fixtures -->
         <div class="card">
-            <h2><i class="fa-solid fa-stadium"></i> 🏟️ Fixtures & Live Scores</h2>
+            <h2>🏟️ Fixtures & Live Scores</h2>
             <div class="scrollable-content matches-grid" id="matches-container">
-                </div>
+                <!-- Injected via JavaScript -->
+            </div>
         </div>
 
+        <!-- 2nd Column: Leaderboard -->
         <div class="card">
-            <h2><i class="fa-solid fa-trophy"></i> 👑 Current Leaderboard</h2>
+            <h2>👑 Current Leaderboard</h2>
             <div class="scrollable-content leaderboard-list" id="leaderboard-container">
-                </div>
+                <!-- Injected via JavaScript -->
+            </div>
         </div>
 
+        <!-- 3rd Column: Employee Directory -->
         <div class="card">
-            <h2><i class="fa-solid fa-users"></i> 📋 Office Directory</h2>
+            <h2>📋 Office Directory</h2>
             <div class="scrollable-content" id="directory-container">
-                </div>
+                <!-- Injected via JavaScript -->
+            </div>
         </div>
     </div>
 
@@ -393,6 +400,8 @@
             const matchesContainer = document.getElementById('matches-container');
             const leaderboardContainer = document.getElementById('leaderboard-container');
             const directoryContainer = document.getElementById('directory-container');
+            
+            if(!matchesContainer || !leaderboardContainer || !directoryContainer) return;
             
             matchesContainer.innerHTML = '';
             leaderboardContainer.innerHTML = '';
