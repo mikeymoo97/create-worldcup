@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pages: write      # 🔥 Required to force the live site to refresh
+      pages: write      
       id-token: write
     steps:
       - name: 📂 Check out code
@@ -77,14 +77,14 @@ jobs:
           with open('index.html', 'r') as f:
               html = f.read()
 
-          # Corrected replacement strings (no broken backslashes)
+          # Clean string updates
           html = html.replace('\"Cape Verde\":', '\"Cape Verde Islands\":')
           html = html.replace('Anousla Watts', 'Anouska Watts')
           html = html.replace('Daniel Lack', 'Daniel Lachku')
           html = html.replace('Gery Batson', 'Gerry Batson')
           html = html.replace('Sunil Beri', 'Suneil Beri')
           
-          # 🔥 Fixed Mike & David's assignments automatically via the script
+          # Inline fallback updates for Mike and David 
           html = html.replace('Mike Lowe\": { team: \"Curacao\"', 'Mike Lowe\": { team: \"Curaçao\"')
           html = html.replace('David Tolu Graham\": { team: \"Bosnia\"', 'David Tolu Graham\": { team: \"Bosnia-Herzegovina\"')
           
@@ -108,4 +108,4 @@ jobs:
           git push
 
       - name: 🌐 Force GitHub Pages Re-Deployment
-        uses: actions/deploy-pages@v4    # 🔥 Forces the server to build the live site immediately!
+        uses: actions/deploy-pages@v4
