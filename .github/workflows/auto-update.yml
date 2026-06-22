@@ -20,14 +20,20 @@ jobs:
 
       - name: Install dependencies
         run: |
-          # Installs requests directly so you don't need a requirements.txt file
           pip install requests
 
       - name: Fetch Latest Scores
         env:
           FOOTBALL_DATA_API_KEY: ${{ secrets.FOOTBALL_DATA_API_KEY }}
         run: |
-          python fetch_scores.py
+          # This automatically locates fetch_scores.py anywhere in your repo and runs it
+          SCRIPT_PATH=$(find . -name "fetch_scores.py" -print -quit)
+          if [ -z "$SCRIPT_PATH" ]; then
+            echo "❌ ERROR: Could not find fetch_scores.py anywhere in the repository!"
+            exit 1
+          fi
+          echo "🚀 Found script at: $SCRIPT_PATH"
+          python "$SCRIPT_PATH"
 
       - name: Commit and Push Changes
         run: |
