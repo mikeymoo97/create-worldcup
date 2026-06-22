@@ -1,133 +1,37 @@
-name: ⚽ Auto Update World Cup Scores
+name: 🏆 Update Office World Cup Tracker
+
 on:
   schedule:
-    - cron: '0 * * * *'
-  workflow_dispatch:
+    - cron: '*/10 * * * *' # Runs automatically every 10 minutes during matches
+  workflow_dispatch: # Allows you to manually click "Run workflow" in GitHub
+
+permissions:
+  contents: write
 
 jobs:
-  update-scores:
+  build-and-update:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages # Tells GitHub explicitly where this deployment environment is targeted
-    permissions:
-      contents: write
-      pages: write      
-      id-token: write
     steps:
-      - name: 📂 Check out code
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: 🤖 Fetch Live Scores via ESPN & Update Board
-        run: |
-          uses_live_data=$(curl -k -s "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard")
-          
-          if [ -z "$uses_live_data" ]; then
-            echo "Empty ESPN API response. Skipping update."
-            exit 1
-          fi
-
-          export RAW_JSON="$uses_live_data"
-
-          python3 -c "
-          import json, re, os
-
-          raw_data = json.loads(os.environ['RAW_JSON'])
-          events = raw_data.get('events', [])
-
-          def map_stage(round_name):
-              r = round_name.upper()
-              if 'GROUP' in r: return 'GROUP_STAGE'
-              if 'ROUND OF 32' in r or 'L32' in r or 'ROUND_32' in r: return 'LAST_32'
-              if 'ROUND OF 16' in r or 'L16' in r or 'ROUND_16' in r: return 'LAST_16'
-              if 'QUARTER' in r: return 'QUARTER_FINALS'
-              if 'SEMI' in r: return 'SEMI_FINALS'
-              if 'FINAL' in r: return 'FINAL'
-              return 'GROUP_STAGE'
-
-          formatted_matches = []
-          for event in events:
-              match_id = event.get('id')
-              raw_stage = event.get('status', {}).get('type', {}).get('detail', 'Group Stage')
-              stage = map_stage(raw_stage)
-              utc_date = event.get('date', '')
-              
-              status_type = event.get('status', {}).get('type', {}).get('name', '')
-              if status_type == 'STATUS_IN_PROGRESS':
-                  status = 'LIVE'
-                  time_label = 'Live Match'
-              elif status_type == 'STATUS_FINAL':
-                  status = 'FINISHED'
-                  time_label = 'Completed'
-              else:
-                  status = 'UPCOMING'
-                  time_label = 'Scheduled'
-                  
-              competitions = event.get('competitions', [{}])
-              competitors = competitions[0].get('competitors', []) if competitions else []
-              
-              home_team = next((c for c in competitors if c.get('homeAway') == 'home'), {})
-              away_team = next((c for c in competitors if c.get('homeAway') == 'away'), {})
-              
-              home_name = home_team.get('team', {}).get('name', '')
-              away_name = away_team.get('team', {}).get('name', '')
-              
-              # Map direct names to your specific office strings
-              if home_name == 'United States' or home_name == 'USA': home_name = 'USA'
-              if away_name == 'United States' or away_name == 'USA': away_name = 'USA'
-              if home_name == 'Cape Verde' or home_name == 'Cabo Verde': home_name = 'Cape Verde Islands'
-              if away_name == 'Cape Verde' or away_name == 'Cabo Verde': away_name = 'Cape Verde Islands'
-              
-              home_score = home_team.get('score', 0)
-              away_score = away_team.get('score', 0)
-              
-              formatted_matches.append({
-                  'id': match_id,
-                  'stage': stage,
-                  'home': home_name,
-                  'away': away_name,
-                  'homeScore': int(home_score) if home_score else 0,
-                  'awayScore': int(away_score) if away_score else 0,
-                  'status': status,
-                  'time': time_label,
-                  'utcDate': utc_date
-              })
-
-          with open('index.html', 'r') as f:
-              html = f.read()
-
-          # Preserve your historical string adjustments
-          html = html.replace('\"Cape Verde\":', '\"Cape Verde Islands\":')
-          html = html.replace('Anousla Watts', 'Anouska Watts')
-          html = html.replace('Daniel Lack', 'Daniel Lachku')
-          html = html.replace('Gery Batson', 'Gerry Batson')
-          html = html.replace('Sunil Beri', 'Suneil Beri')
-          
-          html = html.replace('Mike Lowe\": { team: \"Curacao\"', 'Mike Lowe\": { team: \"Curaçao\"')
-          html = html.replace('David Tolu Graham\": { team: \"Bosnia\"', 'David Tolu Graham\": { team: \"Bosnia-Herzegovina\"')
-          html = html.replace('🎮 Tournament Tree Brackets (Knockout Phase)', '⚽ Tournament Tree')
-
-          replacement = f'// --- ROBOT LIVE DATA INSERTION POINT ---\n        const matches = {json.dumps(formatted_matches, indent=8)};\n        // --- END ROBOT LIVE DATA ---'
-          pattern = r'// --- ROBOT LIVE DATA INSERTION POINT ---.*?// --- END ROBOT LIVE DATA ---'
-          
-          new_html = re.sub(pattern, lambda m: replacement, html, flags=re.DOTALL)
-
-          with open('index.html', 'w') as f:
-              f.write(new_html)
-          print(f'Successfully updated {len(formatted_matches)} matches via ESPN.')
-          "
-
-      - name: 🚀 Push Updates to Repo
-        run: |
-          git config --global user.name "CreateBot"
-          git config --global user.email "bot@createadvertising.com"
-          git add index.html
-          git commit -m "⚽ World Cup Tracker Roster and Sorting Updates Applied!" || exit 0
-          git push
-
-      - name: 📦 Pack and Upload Web Artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          path: '.'
+          python-version: '3.10'
 
-      - name: 🌐 Force GitHub Pages Re-Deployment
-        uses: actions/deploy-pages@v4
+      - name: Install Dependencies
+        run: pip install requests
+
+      - name: Run Update Script
+        env:
+          FOOTBALL_API_KEY: ${{ secrets.FOOTBALL_API_KEY }}
+        run: python update_tracker.py
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "GitHub Action Bot"
+          git config --global user.email "actions@github.com"
+          git add index.html
+          git diff-index --quiet HEAD || git commit -m "🏆 Auto-updated live match data"
+          git push
