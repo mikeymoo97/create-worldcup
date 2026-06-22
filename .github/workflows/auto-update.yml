@@ -1,47 +1,101 @@
-name: Update World Cup Scores
-
+name: ⚽ Auto Update World Cup Scores
 on:
   schedule:
-    - cron: '*/10 * * * *'
+    - cron: '0 * * * *'
   workflow_dispatch:
 
 jobs:
   update-scores:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - name: Checkout repository
+      - name: 📂 Check out code
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-          # Removed the cache parameter to prevent the missing file error
-
-      - name: Install dependencies
-        run: |
-          # If requirements.txt doesn't exist, we skip it safely
-          if [ -f requirements.txt ]; then
-            pip install -r requirements.txt
-          else
-            pip install requests
-          fi
-
-      - name: Fetch Latest Scores
+      - name: 🤖 Fetch Live Scores & Update Board
         env:
-          FOOTBALL_DATA_API_KEY: ${{ secrets.FOOTBALL_DATA_API_KEY }}
+          API_KEY: ${{ secrets.FOOTBALL_DATA_API_KEY }}
         run: |
-          # Check if the file exists before running to prevent crash
-          if [ -f fetch_scores.py ]; then
-            python fetch_scores.py
-          else
-            python main.py || python update.py || echo "Ran script natively"
+          uses_live_data=$(curl -k -s -H "X-Auth-Token: $API_KEY" "https://api.football-data.org/v4/competitions/WC/matches")
+          
+          if [ -z "$uses_live_data" ]; then
+            echo "Empty API response. Skipping update."
+            exit 1
           fi
 
-      - name: Commit and Push Changes
+          export RAW_JSON="$uses_live_data"
+
+          python3 -c "
+          import json, re, os
+
+          raw_data = json.loads(os.environ['RAW_JSON'])
+          raw_matches = raw_data.get('matches', [])
+
+          formatted_matches = []
+          for m in raw_matches:
+              api_status = m.get('status', 'TIMED')
+              status = 'UPCOMING'
+              if api_status in ['IN_PLAY', 'PAUSED', 'LIVE']: 
+                  status = 'LIVE'
+              elif api_status == 'FINISHED': 
+                  status = 'FINISHED'
+              
+              full_time = m.get('score', {}).get('fullTime', {})
+              home_score = full_time.get('home')
+              away_score = full_time.get('away')
+              
+              if home_score is None: home_score = 0
+              if away_score is None: away_score = 0
+
+              time_label = 'Completed' if status == 'FINISHED' else 'Scheduled'
+              if status == 'LIVE': time_label = 'Live Match'
+
+              home_name = m['homeTeam'].get('name', '')
+              away_name = m['awayTeam'].get('name', '')
+              
+              # Map team names exactly to your local directory setup
+              if home_name == 'United States': home_name = 'USA'
+              if away_name == 'United States': away_name = 'USA'
+              if home_name == 'Cape Verde': home_name = 'Cape Verde Islands'
+              if away_name == 'Cape Verde': away_name = 'Cape Verde Islands'
+
+              formatted_matches.append({
+                  'id': m.get('id'),
+                  'stage': m.get('stage', 'LAST_16'),
+                  'home': home_name,
+                  'away': away_name,
+                  'homeScore': int(home_score),
+                  'awayScore': int(away_score),
+                  'status': status,
+                  'time': time_label,
+                  'utcDate': m.get('utcDate', '')
+              })
+
+          with open('index.html', 'r') as f:
+              html = f.read()
+
+          # Perform the visual roster corrections inline inside index.html strings to keep updates synchronized
+          html = html.replace('\"Cape Verde\": { employee: \"Kavi Walia\"', '\"Cape Verde Islands\": { employee: \"Kavi Walia\"')
+          html = html.replace('Anousla Watts', 'Anouska Watts')
+          html = html.replace('Daniel Lack', 'Daniel Lachku')
+          html = html.replace('Gery Batson', 'Gerry Batson')
+          html = html.replace('Sunil Beri', 'Suneil Beri')
+          html = html.replace('🎮 Tournament Tree Brackets (Knockout Phase)', '⚽ Tournament Tree')
+
+          replacement = f'// --- ROBOT LIVE DATA INSERTION POINT ---\n        const matches = {json.dumps(formatted_matches, indent=8)};\n        // --- END ROBOT LIVE DATA ---'
+          pattern = r'// --- ROBOT LIVE DATA INSERTION POINT ---.*?// --- END ROBOT LIVE DATA ---'
+          
+          new_html = re.sub(pattern, lambda m: replacement, html, flags=re.DOTALL)
+
+          with open('index.html', 'w') as f:
+              f.write(new_html)
+          "
+
+      - name: 🚀 Push Updates Live
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add .
-          git diff-index --quiet HEAD || git commit -m "🏆 Auto-update match scores and standings [Skip CI]"
+          git config --global user.name "CreateBot"
+          git config --global user.email "bot@createadvertising.com"
+          git add index.html
+          git commit -m "⚽ World Cup Tracker Roster and Sorting Updates Applied!" || exit 0
           git push
