@@ -8,7 +8,7 @@ jobs:
   update-scores:
     runs-on: ubuntu-latest
     environment:
-      name: github-pages # 🔥 Added: Tells GitHub explicitly where this deployment environment is targeted
+      name: github-pages # Tells GitHub explicitly where this deployment environment is targeted
     permissions:
       contents: write
       pages: write      
@@ -17,14 +17,12 @@ jobs:
       - name: 📂 Check out code
         uses: actions/checkout@v4
 
-      - name: 🤖 Fetch Live Scores & Update Board
-        env:
-          API_KEY: ${{ secrets.FOOTBALL_DATA_API_KEY }}
+      - name: 🤖 Fetch Live Scores via ESPN & Update Board
         run: |
-          uses_live_data=$(curl -k -s -H "X-Auth-Token: $API_KEY" "https://api.football-data.org/v4/competitions/WC/matches")
+          uses_live_data=$(curl -k -s "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard")
           
           if [ -z "$uses_live_data" ]; then
-            echo "Empty API response. Skipping update."
+            echo "Empty ESPN API response. Skipping update."
             exit 1
           fi
 
@@ -34,50 +32,70 @@ jobs:
           import json, re, os
 
           raw_data = json.loads(os.environ['RAW_JSON'])
-          raw_matches = raw_data.get('matches', [])
+          events = raw_data.get('events', [])
+
+          def map_stage(round_name):
+              r = round_name.upper()
+              if 'GROUP' in r: return 'GROUP_STAGE'
+              if 'ROUND OF 32' in r or 'L32' in r or 'ROUND_32' in r: return 'LAST_32'
+              if 'ROUND OF 16' in r or 'L16' in r or 'ROUND_16' in r: return 'LAST_16'
+              if 'QUARTER' in r: return 'QUARTER_FINALS'
+              if 'SEMI' in r: return 'SEMI_FINALS'
+              if 'FINAL' in r: return 'FINAL'
+              return 'GROUP_STAGE'
 
           formatted_matches = []
-          for m in raw_matches:
-              api_status = m.get('status', 'TIMED')
-              status = 'UPCOMING'
-              if api_status in ['IN_PLAY', 'PAUSED', 'LIVE']: 
+          for event in events:
+              match_id = event.get('id')
+              raw_stage = event.get('status', {}).get('type', {}).get('detail', 'Group Stage')
+              stage = map_stage(raw_stage)
+              utc_date = event.get('date', '')
+              
+              status_type = event.get('status', {}).get('type', {}).get('name', '')
+              if status_type == 'STATUS_IN_PROGRESS':
                   status = 'LIVE'
-              elif api_status == 'FINISHED': 
+                  time_label = 'Live Match'
+              elif status_type == 'STATUS_FINAL':
                   status = 'FINISHED'
+                  time_label = 'Completed'
+              else:
+                  status = 'UPCOMING'
+                  time_label = 'Scheduled'
+                  
+              competitions = event.get('competitions', [{}])
+              competitors = competitions[0].get('competitors', []) if competitions else []
               
-              full_time = m.get('score', {}).get('fullTime', {})
-              home_score = full_time.get('home')
-              away_score = full_time.get('away')
+              home_team = next((c for c in competitors if c.get('homeAway') == 'home'), {})
+              away_team = next((c for c in competitors if c.get('homeAway') == 'away'), {})
               
-              if home_score is None: home_score = 0
-              if away_score is None: away_score = 0
-
-              time_label = 'Completed' if status == 'FINISHED' else 'Scheduled'
-              if status == 'LIVE': time_label = 'Live Match'
-
-              home_name = m['homeTeam'].get('name', '')
-              away_name = m['awayTeam'].get('name', '')
+              home_name = home_team.get('team', {}).get('name', '')
+              away_name = away_team.get('team', {}).get('name', '')
               
-              if home_name == 'United States': home_name = 'USA'
-              if away_name == 'United States': away_name = 'USA'
-              if home_name == 'Cape Verde': home_name = 'Cape Verde Islands'
-              if away_name == 'Cape Verde': away_name = 'Cape Verde Islands'
-
+              # Map direct names to your specific office strings
+              if home_name == 'United States' or home_name == 'USA': home_name = 'USA'
+              if away_name == 'United States' or away_name == 'USA': away_name = 'USA'
+              if home_name == 'Cape Verde' or home_name == 'Cabo Verde': home_name = 'Cape Verde Islands'
+              if away_name == 'Cape Verde' or away_name == 'Cabo Verde': away_name = 'Cape Verde Islands'
+              
+              home_score = home_team.get('score', 0)
+              away_score = away_team.get('score', 0)
+              
               formatted_matches.append({
-                  'id': m.get('id'),
-                  'stage': m.get('stage', 'LAST_16'),
+                  'id': match_id,
+                  'stage': stage,
                   'home': home_name,
                   'away': away_name,
-                  'homeScore': int(home_score),
-                  'awayScore': int(away_score),
+                  'homeScore': int(home_score) if home_score else 0,
+                  'awayScore': int(away_score) if away_score else 0,
                   'status': status,
                   'time': time_label,
-                  'utcDate': m.get('utcDate', '')
+                  'utcDate': utc_date
               })
 
           with open('index.html', 'r') as f:
               html = f.read()
 
+          # Preserve your historical string adjustments
           html = html.replace('\"Cape Verde\":', '\"Cape Verde Islands\":')
           html = html.replace('Anousla Watts', 'Anouska Watts')
           html = html.replace('Daniel Lack', 'Daniel Lachku')
@@ -86,7 +104,6 @@ jobs:
           
           html = html.replace('Mike Lowe\": { team: \"Curacao\"', 'Mike Lowe\": { team: \"Curaçao\"')
           html = html.replace('David Tolu Graham\": { team: \"Bosnia\"', 'David Tolu Graham\": { team: \"Bosnia-Herzegovina\"')
-          
           html = html.replace('🎮 Tournament Tree Brackets (Knockout Phase)', '⚽ Tournament Tree')
 
           replacement = f'// --- ROBOT LIVE DATA INSERTION POINT ---\n        const matches = {json.dumps(formatted_matches, indent=8)};\n        // --- END ROBOT LIVE DATA ---'
@@ -96,6 +113,7 @@ jobs:
 
           with open('index.html', 'w') as f:
               f.write(new_html)
+          print(f'Successfully updated {len(formatted_matches)} matches via ESPN.')
           "
 
       - name: 🚀 Push Updates to Repo
