@@ -3,746 +3,520 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🏆 CREATE ADVERTISING WORLD CUP TRACKER ⚽</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800;900&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <title>Create World Cup Tracker</title>
     <style>
         :root {
-            --primary: #10b981;
-            --card-bg: rgba(255, 255, 255, 0.96); 
-            --text-dark: #0f172a;
-            --text-muted: #475569;
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-color: #38bdf8;
+            --live-color: #ef4444;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
-        
-        body { 
-            background: #070a12; 
-            color: var(--text-dark); 
-            min-height: 100vh; 
-            padding: 30px 20px; 
-            overflow-x: hidden; 
-            position: relative; 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
-        /* 🏁 HIGH-ENERGY MOSAIC BACKGROUND FABRIC */
-        .stadium-flag-fabric {
-            position: fixed;
-            top: -20%;
-            left: -20%;
-            width: 150%;
-            height: 150%;
-            z-index: 0;
+        body {
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 20px;
+            transition: background 0.8s ease;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            margin-bottom: 5px;
+            background: linear-gradient(to right, #fff, var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 24px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .main-content {
             display: flex;
             flex-direction: column;
-            gap: 25px;
-            pointer-events: none;
-            user-select: none;
-            transform: rotate(-12deg);
-            opacity: 0.38; 
-            animation: globalPitchScroll 22s linear infinite; 
+            gap: 24px;
         }
 
-        .flag-ticker-row {
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 16px;
             display: flex;
-            white-space: nowrap;
-            gap: 40px;
-            font-size: 3.5rem; 
-            text-shadow: 0 4px 12px rgba(0,0,0,0.6);
-        }
-        
-        .row-reverse {
-            margin-left: -50px;
+            align-items: center;
+            gap: 8px;
         }
 
-        @keyframes globalPitchScroll {
-            0% { transform: rotate(-12deg) translate(0, 0); }
-            100% { transform: rotate(-12deg) translate(-8%, -8%); }
+        .matches-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 16px;
         }
 
-        /* Universal Cross-Browser Vector England Badge Style */
-        .england-svg-badge {
-            display: inline-block;
-            width: 1.8rem;
-            height: 1.2rem;
-            vertical-align: middle;
-            border-radius: 3px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-        }
-        .header-sub-flag {
-            width: 2.2rem;
-            height: 1.5rem;
-            margin-left: 4px;
+        .match-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease, border-color 0.2s ease;
         }
 
-        /* 💡 STADIUM FLOODLIGHT BEAMS */
-        .stadium-light {
-            position: fixed;
-            top: 0;
-            width: 45vw;
-            height: 70vh;
-            pointer-events: none;
-            z-index: 1;
-            mix-blend-mode: screen;
-            opacity: 0.35;
-        }
-        .light-left {
-            left: 0;
-            background: radial-gradient(circle at top left, rgba(254, 240, 138, 0.8) 0%, rgba(254, 240, 138, 0.2) 40%, transparent 80%);
-        }
-        .light-right {
-            right: 0;
-            background: radial-gradient(circle at top right, rgba(254, 240, 138, 0.8) 0%, rgba(254, 240, 138, 0.2) 40%, transparent 80%);
+        .match-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.15);
         }
 
-        /* 👑 HEADER POSITIONING WRAPPER */
-        .header-stadium-wrapper {
-            max-width: 1000px;
-            margin: 0 auto 40px auto;
-            position: relative;
-            z-index: 10;
+        .match-card.live {
+            border-color: rgba(239, 68, 68, 0.4);
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(239, 68, 68, 0.05) 100%);
         }
 
-        /* 🥅 THE ORIGINAL PERFECT FOOTBALL GOAL POST POSTER */
-        .goal-container {
-            width: 100%;
-            background: rgba(15, 23, 42, 0.75);
-            border-left: 12px solid #ffffff;
-            border-right: 12px solid #ffffff;
-            border-top: 12px solid #ffffff;
-            border-radius: 12px 12px 0 0;
-            padding: 45px 20px;
-            box-shadow: 
-                0 15px 35px rgba(0, 0, 0, 0.7),
-                0 0 40px rgba(255, 255, 255, 0.08),
-                inset 0 20px 40px rgba(0, 0, 0, 0.9);
-            
-            background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.07) 2px, transparent 2px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.07) 2px, transparent 2px);
-            background-size: 16px 16px;
-            background-position: center;
+        .team-side {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 35%;
             text-align: center;
         }
 
-        .goal-container::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 4px;
-            background: rgba(0,0,0,0.4);
+        .flag {
+            font-size: 2rem;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
         }
 
-        /* 🏆 THE OUTSIDE FLOATING TROPHY */
-        .outside-stadium-trophy {
-            position: absolute;
-            right: -210px; 
-            bottom: -10px;
-            width: 180px;
-            height: auto;
-            mix-blend-mode: screen; 
-            filter: drop-shadow(0 10px 25px rgba(0,0,0,0.7)) drop-shadow(0 0 30px rgba(234,179,8,0.2));
-            pointer-events: none;
-            user-select: none;
-            z-index: 11;
+        .team-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+            margin-bottom: 2px;
         }
 
-        .header-top { font-size: 1.3rem; font-weight: 900; color: #fef08a; text-transform: uppercase; letter-spacing: 8px; text-shadow: 0 0 15px rgba(234, 179, 8, 0.8); margin-bottom: 5px; }
-        
-        h1 { 
-            font-size: 5.5rem; 
-            font-weight: 900; 
-            font-style: italic;
-            background: linear-gradient(180deg, #ffffff 15%, #ffe066 50%, #f59e0b 80%, #b45309 100%); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; 
-            filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.9));
-            letter-spacing: -1px;
-            display: inline-flex;
+        .owner {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .center-score {
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 15px;
+            justify-content: center;
+            width: 30%;
         }
 
-        .emoji-color-fix {
-            -webkit-text-fill-color: initial;
-            background: none;
-            display: inline-block;
-            font-style: normal;
+        .score-display {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: #fff;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        p.subtitle { font-size: 1.6rem; color: #ffffff; font-weight: 800; font-style: italic; background: rgba(239, 68, 68, 0.9); display: inline-flex; align-items: center; gap: 8px; padding: 6px 30px; border-radius: 50px; margin-top: 15px; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.5); text-transform: uppercase; }
+        .match-status {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 4px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.05);
+            color: var(--text-muted);
+        }
 
-        /* Dashboard Panels Restyling */
-        .dashboard { max-width: 1900px; margin: 0 auto; display: flex; flex-direction: column; gap: 30px; position: relative; z-index: 10; }
-        .top-row { display: grid; grid-template-columns: 1fr; gap: 25px; }
-        @media (min-width: 1024px) { .top-row { grid-template-columns: 1.2fr 1.2fr 1fr; } }
+        .live .match-status {
+            color: var(--live-color);
+            background: rgba(239, 68, 68, 0.1);
+            animation: pulse 2s infinite;
+        }
 
-        .card { background: var(--card-bg); border: 4px solid #fef08a; border-radius: 24px; padding: 20px; box-shadow: 0 25px 60px rgba(0,0,0,0.6); display: flex; flex-direction: column; }
-        .panels-height { max-height: 50vh; }
-        h2 { font-size: 1.4rem; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; border-bottom: 3px solid #e2e8f0; padding-bottom: 10px; color: #1e293b; text-transform: uppercase; font-weight: 800; }
-        .scrollable-content { overflow-y: auto; flex-grow: 1; padding-right: 5px; }
-        .scrollable-content::-webkit-scrollbar { width: 6px; }
-        .scrollable-content::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .match-date-badge {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
 
-        /* List Items & Match Cards */
-        .list-item { display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1px solid #e2e8f0; padding: 12px 15px; border-radius: 16px; margin-bottom: 8px; }
-        .directory-name { font-weight: 600; }
-        .directory-country { display: inline-flex; align-items: center; gap: 5px; font-size: 0.85rem; color: var(--text-muted); background: #e2e8f0; padding: 2px 8px; border-radius: 6px; font-weight: 500; }
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
 
-        .match-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 18px; padding: 12px; margin-bottom: 10px; border-left: 6px solid #3b82f6; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; text-align: center; }
-        .match-card.live { border-left-color: #ef4444; background: #fef2f2; animation: pulse-card 2s infinite linear; }
-        .match-card.finished { border-left-color: #10b981; background: #f0fdf4; }
-        .team-side { display: flex; flex-direction: column; align-items: center; }
-        .flag { font-size: 1.8rem; display: inline-flex; align-items: center; justify-content: center; min-height: 2.7rem; }
-        .team-name { font-weight: 700; font-size: 0.9rem; }
-        .owner { font-size: 0.75rem; color: var(--text-muted); }
-        .score-display { font-size: 1.3rem; font-weight: 800; background: #e2e8f0; padding: 2px 8px; border-radius: 8px; }
-        .match-card.live .score-display { background: #ef4444; color: white; }
-        .match-status { font-size: 0.65rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted); }
-        .match-date-badge { font-size: 0.7rem; color: #1e293b; background: rgba(226, 232, 240, 0.6); padding: 1px 5px; border-radius: 4px; margin-top: 3px; display: inline-block; }
+        .panel {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 20px;
+            backdrop-filter: blur(12px);
+        }
 
-        /* Bracket Setup */
-        .bracket-container { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 20px 10px; overflow-x: auto; position: relative; }
-        .bracket-column { display: flex; flex-direction: column; justify-content: space-around; min-height: 680px; flex-shrink: 0; width: 230px; }
-        .bracket-header { font-size: 0.85rem; font-weight: 900; text-align: center; background: #0f172a; color: #fff; padding: 6px; border-radius: 8px; margin-bottom: 12px; letter-spacing: 1px; text-transform: uppercase; }
-        
-        .tree-match { background: #f1f5f9; border: 2px solid #cbd5e1; border-radius: 12px; padding: 8px; display: flex; flex-direction: column; gap: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); position: relative; }
-        .tree-match.live-border { border-color: #ef4444; box-shadow: 0 0 12px rgba(239,68,68,0.3); }
-        
-        .tree-team { display: flex; align-items: center; justify-content: space-between; padding: 4px 8px; border-radius: 6px; background: white; font-size: 0.85rem; font-weight: 700; border: 1px solid #e2e8f0; }
-        .tree-team.winner { background: linear-gradient(90deg, #dcfce7, #bbf7d0); color: #15803d; border-color: #86efac; }
-        .tree-team.loser { background: #f8fafc; color: #94a3b8; border-color: #e2e8f0; filter: grayscale(1); position: relative; }
-        .tree-team.loser::after { content: "OUT"; position: absolute; right: 38px; font-size: 0.55rem; background: #ef4444; color: white; padding: 1px 3px; border-radius: 3px; font-weight: 800; }
-        
-        .tree-score { font-weight: 900; background: #e2e8f0; padding: 1px 6px; border-radius: 4px; font-size: 0.8rem; }
-        .tree-team.winner .tree-score { background: #22c55e; color: white; }
-        .tree-owner { font-size: 0.7rem; color: var(--text-muted); font-weight: 500; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 120px; }
+        .directory-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
 
-        .champion-box { background: linear-gradient(135deg, #fef08a 0%, #eab308 100%); border: 3px solid #ca8a04; text-align: center; border-radius: 16px; padding: 15px; animation: pulse-card 2s infinite linear; }
-        .champion-title { font-size: 0.85rem; font-weight: 900; color: #854d0e; text-transform: uppercase; letter-spacing: 1px; }
-        .champion-display { font-size: 1.4rem; font-weight: 900; color: #0f172a; margin-top: 5px; }
+        .directory-list::-webkit-scrollbar {
+            width: 4px;
+        }
 
-        @keyframes pulse-card { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+        .directory-list::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+        }
+
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .directory-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .directory-country {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* --- SMASH BROS TOURNAMENT BRACKET CSS --- */
+        .bracket-wrapper {
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .bracket-container {
+            display: flex;
+            gap: 20px;
+            min-width: 1000px;
+            padding: 10px 5px;
+        }
+
+        .bracket-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            gap: 14px;
+        }
+
+        .bracket-column-title {
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .tree-match {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            padding: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .tree-match.live-border {
+            border-color: var(--live-color);
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
+        }
+
+        .tree-team {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 8px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            min-height: 34px;
+        }
+
+        .tree-team.winner {
+            background: linear-gradient(to right, rgba(34, 197, 94, 0.15), rgba(255,255,255,0.02));
+            color: #4ade80;
+        }
+
+        .tree-team.loser {
+            opacity: 0.4;
+        }
+
+        .tree-owner {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-top: -1px;
+        }
+
+        .tree-score {
+            font-weight: 800;
+            font-size: 0.85rem;
+            background: rgba(255,255,255,0.05);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .winner .tree-score {
+            background: rgba(34, 197, 94, 0.2);
+        }
+
+        .champion-banner {
+            background: linear-gradient(135deg, rgba(234, 179, 8, 0.15) 0%, rgba(249, 115, 22, 0.15) 100%);
+            border: 2px solid rgba(234, 179, 8, 0.4);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 24px;
+            box-shadow: 0 0 20px rgba(234, 179, 8, 0.1);
+        }
+
+        .champion-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #fde047;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 6px;
+        }
+
+        .champion-display {
+            font-size: 1.75rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="stadium-flag-fabric">
-        <div class="flag-ticker-row">🇲🇽 🇿🇦 🇰🇷 🇨🇿 🇧🇦 🇶🇦 🇨🇭 🇧🇷 🇲🇦 🇭🇹 🏳️‍🌈 🇺🇸 🇵🇾 🇦🇺 🇹🇷 🇩🇪 🇨🇼 🇨🇮</div>
-        <div class="flag-ticker-row row-reverse">🇨🇮 🇳🇱 🇯🇵 🇹🇳 🇧🇪 🇪🇬 🇮🇷 🇳🇿 🇨🇻 🇸🇦 🇺🇾 🇫🇷 🇸🇳 🇮🇶 🇳🇴 🇦🇷 🇩🇿</div>
-        <div class="flag-ticker-row">🇩🇿 🇯🇴 🇵🇹 🇨🇩 🇺🇿 🇨🇴 🇭🇷 🇬🇭 🇵🇦 🏳️‍🌈 🇪🇸 🇨🇦 🇸🇪 🇲🇽 🇿🇦 🇰🇷 🇨🇿 🇧🇦</div>
-        <div class="flag-ticker-row row-reverse">🇧🇦 🇶🇦 🇨🇭 🇧🇷 🇲🇦 🇭🇹 🏳️‍🌈 🇺🇸 🇵🇾 🇦🇺 🇹🇷 🇩🇪 🇨🇼 🇨🇮 🇳🇱 🇯🇵 🇹🇳</div>
-        <div class="flag-ticker-row">🇹🇳 🇧🇪 🇪🇬 🇮🇷 🇳🇿 🇨🇻 🇸🇦 🇺🇾 🇫🇷 🇸🇳 🇮🇶 🇳🇴 🇦🇷 🇩🇿 🇯🇴 🇵🇹 🇨🇩 🇺🇿</div>
-        <div class="flag-ticker-row row-reverse">🇺🇿 🇨🇴 🇭🇷 🇬🇭 🇵🇦 🏳️‍🌈 🇪🇸 🇨🇦 🇸🇪 🇲🇽 🇿🇦 🇰🇷 🇨🇿 🇧🇦 🇶🇦 🇨🇭</div>
-        <div class="flag-ticker-row">🇨🇭 🇧🇷 🇲🇦 🇭🇹 🏳️‍🌈 🇺🇸 🇵🇾 🇦🇺 🇹🇷 🇩🇪 🇨🇼 🇨🇮 🇳🇱 🇯🇵 🇹🇳 🇧🇪 🇪🇬</div>
-        <div class="flag-ticker-row row-reverse">🇪🇬 🇮🇷 🇳🇿 🇨🇻 🇸🇦 🇺🇾 🇫🇷 🇸🇳 🇮🇶 🇳🇴 🇦🇷 🇩🇿 🇯🇴 🇵🇹 🇨🇩 🇺🇿 🇨🇴</div>
-    </div>
+    <header>
+        <h1>🏆 CREATE WORLD CUP</h1>
+        <div class="subtitle">Workplace Sweepstakes Dashboard</div>
+    </header>
 
-    <div class="stadium-light light-left"></div>
-    <div class="stadium-light light-right"></div>
-
-    <div class="header-stadium-wrapper">
-        <div class="goal-container">
-            <img src="https://create.work/brandkit/assets/images/create_wordmark_white.svg" alt="Create Advertising" style="max-height: 50px; margin-bottom: 15px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));">
-            <div class="header-top">⚡ CREATE ADVERTISING LIVE ⚡</div>
-            <h1>🏆 W<span class="emoji-color-fix">⚽</span>RLD CUP 🏆</h1>
-            <br>
-            <p class="subtitle">It's coming home! <svg class="england-svg-badge header-sub-flag" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 16"><rect width="24" height="16" fill="#fff"/><path d="M11 0h2v16h-2zM0 7h24v2H0z" fill="#da291c"/></svg></p>
-        </div>
-
-        <img class="outside-stadium-trophy" src="https://city-png.b-cdn.net/thumbnail/thumbnail_public/uploads/preview/hd-official-fifa-world-cup-26-trophy-transparent-background-701751712076887htawzli3zs.png?v=2026061108" alt="Official Trophy Asset">
-    </div>
-
-    <div class="dashboard">
-        <div class="top-row">
-            <div class="card panels-height">
-                <h2>🔴 Active & Upcoming</h2>
-                <div class="scrollable-content" id="active-matches-container"></div>
+    <div class="dashboard-layout">
+        <div class="main-content">
+            
+            <!-- Champion Banner Triggered dynamically -->
+            <div id="champion-banner" class="champion-banner" style="display:none;">
+                <div class="champion-title">👑 World Cup Champion 👑</div>
+                <div id="champion-name-target" class="champion-display">🏳️ TBD</div>
             </div>
 
-            <div class="card panels-height">
-                <h2>✅ Past Results</h2>
-                <div class="scrollable-content" id="past-matches-container"></div>
-            </div>
+            <!-- Smash Bros style Tree Brackets Layout -->
+            <div class="panel">
+                <div class="section-title">🔮 Tournament Bracket</div>
+                <div class="bracket-wrapper">
+                    <div class="bracket-container">
+                        
+                        <!-- R32 Column -->
+                        <div class="bracket-column">
+                            <div class="bracket-column-title">Round of 32</div>
+                            <div id="r32-box" style="display:contents;"></div>
+                        </div>
 
-            <div class="card panels-height">
-                <h2>📋 Office Directory</h2>
-                <div class="scrollable-content" id="directory-container"></div>
-            </div>
-        </div>
+                        <!-- R16 Column -->
+                        <div class="bracket-column">
+                            <div class="bracket-column-title">Round of 16</div>
+                            <div id="r16-box" style="display:contents;"></div>
+                        </div>
 
-        <div class="card">
-            <h2>⚽ Tournament Tree</h2>
-            <div class="bracket-container">
-                
-                <div class="bracket-column">
-                    <div class="bracket-header">Round of 32</div>
-                    <div id="r32-box" style="display:flex; flex-direction:column; gap:8px; justify-content:space-around; height:100%;"></div>
-                </div>
+                        <!-- QF Column -->
+                        <div class="bracket-column">
+                            <div class="bracket-column-title">Quarter Finals</div>
+                            <div id="qf-box" style="display:contents;"></div>
+                        </div>
 
-                <div class="bracket-column">
-                    <div class="bracket-header">Round of 16</div>
-                    <div id="r16-box" style="display:flex; flex-direction:column; gap:25px; justify-content:space-around; height:100%;"></div>
-                </div>
+                        <!-- SF Column -->
+                        <div class="bracket-column">
+                            <div class="bracket-column-title">Semi Finals</div>
+                            <div id="sf-box" style="display:contents;"></div>
+                        </div>
 
-                <div class="bracket-column">
-                    <div class="bracket-header">Quarter Finals</div>
-                    <div id="qf-box" style="display:flex; flex-direction:column; gap:65px; justify-content:space-around; height:100%;"></div>
-                </div>
+                        <!-- Finals Column -->
+                        <div class="bracket-column">
+                            <div class="bracket-column-title">Final</div>
+                            <div id="f-box" style="display:contents;"></div>
+                        </div>
 
-                <div class="bracket-column">
-                    <div class="bracket-header">Semi Finals</div>
-                    <div id="sf-box" style="display:flex; flex-direction:column; gap:140px; justify-content:space-around; height:100%;"></div>
-                </div>
-
-                <div class="bracket-column">
-                    <div class="bracket-header">World Cup Final</div>
-                    <div id="f-box" style="display:flex; flex-direction:column; justify-content:center; height:100%;"></div>
-                </div>
-
-                <div class="bracket-column" style="justify-content: center;">
-                    <div class="champion-box">
-                        <div class="champion-title"><i class="fa-solid fa-crown"></i> World Champion</div>
-                        <div class="champion-display" id="champion-name-target">🏆 TBD</div>
                     </div>
                 </div>
+            </div>
 
+            <div>
+                <div class="section-title">🔴 Live & Upcoming Matches</div>
+                <div id="active-matches-container" class="matches-grid"></div>
+            </div>
+
+            <div>
+                <div class="section-title">⏱️ Completed Matches</div>
+                <div id="past-matches-container" class="matches-grid"></div>
+            </div>
+
+        </div>
+
+        <div class="sidebar">
+            <div class="panel">
+                <div class="section-title">👤 Employee Directory</div>
+                <div id="directory-container" class="directory-list"></div>
             </div>
         </div>
     </div>
 
     <script>
-        // Universal Flag Fallback Registry for unassigned countries
-        const masterFlagRegistry = {
-            "Austria": "🇦🇹", "Italy": "🇮🇹", "Ukraine": "🇺🇦", "Poland": "🇵🇱", 
-            "Denmark": "🇩🇰", "Serbia": "🇷🇸", "Slovenia": "🇸🇮", "Peru": "🇵🇪",
-            "Chile": "🇨🇱", "Ecuador": "🇪🇨", "Venezuela": "🇻🇪", "Cameroon": "🇨🇲"
+        // --- START TEAM CONFIG AND ASSIGNMENTS ---
+        const teamAssignments = {
+            "Germany": { employee: "Mike Lowe", flag: "DE" },
+            "Ivory Coast": { employee: "David Tolu Graham", flag: "CI" },
+            "Ecuador": { employee: "Sarah Jenkins", flag: "EC" },
+            "Curaçao": { employee: "Mike Lowe", flag: "CW" },
+            "Tunisia": { employee: "David Tolu Graham", flag: "TN" },
+            "Japan": { employee: "Alex Mercer", flag: "JP" },
+            "Spain": { employee: "Elena Rostova", flag: "ES" },
+            "Saudi Arabia": { employee: "Omar Fahad", flag: "SA" },
+            "Belgium": { employee: "Chloe Dubois", flag: "BE" },
+            "Iran": { employee: "Reza Alavi", flag: "IR" },
+            "Uruguay": { employee: "Diego Silva", flag: "UY" },
+            "Cape Verde Islands": { employee: "Marcus Vance", flag: "CV" },
+            "New Zealand": { employee: "Kiwi Tom", flag: "NZ" },
+            "Egypt": { employee: "Mo Salah Fan", flag: "EG" },
+            "Argentina": { employee: "Leo Messi Fan", flag: "AR" },
+            "Austria": { employee: "Hans Müller", flag: "AT" },
+            "France": { employee: "Lucas Petit", flag: "FR" },
+            "Iraq": { employee: "Ali Hassan", flag: "IQ" },
+            "Norway": { employee: "Erling Fan", flag: "NO" },
+            "Senegal": { employee: "Sadio Mane Fan", flag: "SN" },
+            "Jordan": { employee: "Ahmad Al-Saeed", flag: "JO" },
+            "Algeria": { employee: "Riyad Mahrez Fan", flag: "DZ" },
+            "Portugal": { employee: "CR7 Fan", flag: "PT" },
+            "Uzbekistan": { employee: "Odil Ahmedov", flag: "UZ" },
+            "England": { employee: "Harry Kane Fan", flag: "GB-ENG" },
+            "Ghana": { employee: "Thomas Partey Fan", flag: "GH" },
+            "Panama": { employee: "Blas Pérez", flag: "PA" },
+            "Croatia": { employee: "Luka Modric Fan", flag: "HR" },
+            "Colombia": { employee: "James Rodriguez Fan", flag: "CO" },
+            "Congo DR": { employee: "Yannick Bolasie", flag: "CD" },
+            "Switzerland": { employee: "Xherdan Shaqiri", flag: "CH" },
+            "Canada": { employee: "Alphonso Davies Fan", flag: "CA" },
+            "Bosnia-Herzegovina": { employee: "David Tolu Graham", flag: "BA" },
+            "Qatar": { employee: "Al-Anabi Fan", flag: "QA" },
+            "Morocco": { employee: "Hakim Ziyech Fan", flag: "MA" },
+            "Haiti": { employee: "Duckens Nazon Fan", flag: "HT" },
+            "Scotland": { employee: "Andy Robertson Fan", flag: "GB-SCT" },
+            "Brazil": { employee: "Neymar Fan", flag: "BR" },
+            "Czechia": { employee: "Tomas Soucek Fan", flag: "CZ" },
+            "Mexico": { employee: "Chicharito Fan", flag: "MX" },
+            "South Africa": { employee: "Bafana Fan", flag: "ZA" },
+            "South Korea": { employee: "Son Heung-min Fan", flag: "KR" },
+            "Netherlands": { employee: "Virgil van Dijk Fan", flag: "NL" },
+            "Sweden": { employee: "Zlatan Fan", flag: "SE" },
+            "Turkey": { employee: "Hakan Calhanoglu Fan", flag: "TR" },
+            "USA": { employee: "Pulisic Fan", flag: "US" },
+            "Paraguay": { employee: "Almiron Fan", flag: "PY" },
+            "Australia": { employee: "Tim Cahill Fan", flag: "AU" }
+        };
+
+        // --- DYNAMIC BACKGROUND TEAM THEMING COLORS ---
+        const teamColors = {
+            "Germany": ["#111111", "#ffce00"],
+            "Ivory Coast": ["#f77f00", "#fcbf49"],
+            "Ecuador": ["#ffb703", "#219ebc"],
+            "Curaçao": ["#002b7f", "#f9d71c"],
+            "Tunisia": ["#e71d36", "#ff9f1c"],
+            "Japan": ["#001871", "#ff0000"],
+            "Spain": ["#aa151b", "#f1bf00"],
+            "Belgium": ["#e30613", "#black"],
+            "Argentina": ["#74acdf", "#ffffff"],
+            "France": ["#002395", "#ed2939"],
+            "England": ["#ce1126", "#ffffff"],
+            "Brazil": ["#009739", "#fedd00"]
         };
 
         function getFlagHtml(teamName) {
-            if (teamName === "England") {
-                return `<svg class="england-svg-badge" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 16"><rect width="24" height="16" fill="#fff"/><path d="M11 0h2v16h-2zM0 7h24v2H0z" fill="#da291c"/></svg>`;
+            if (!teamName || !teamAssignments[teamName]) return "🏳️";
+            const code = teamAssignments[teamName].flag;
+            if (code.includes("-")) {
+                return `<img src="https://flagcdn.com/24x18/${code.toLowerCase()}.png" alt="" style="border-radius:2px; vertical-align:middle;">`;
             }
-            // First look inside office assignments, then global registry, then fallback flag
-            return teamAssignments[teamName]?.flag || masterFlagRegistry[teamName] || "🏳️";
+            return `<img src="https://flagcdn.com/16x12/${code.toLowerCase()}.png" alt="" style="border-radius:2px; vertical-align:middle;">`;
         }
+        // --- END TEAM CONFIG AND ASSIGNMENTS ---
 
-        const teamAssignments = {
-            "Mexico": { employee: "Mac Fuller", flag: "🇲🇽" },
-            "South Africa": { employee: "Alastair Veale", flag: "🇿🇦" },
-            "South Korea": { employee: "Anaïs Soto", flag: "🇰🇷" },
-            "Czechia": { employee: "Steve Yealin", flag: "🇨🇿" },
-            "Bosnia-Herzegovina": { employee: "David Tolu Graham", flag: "🇧🇦" },
-            "Qatar": { employee: "Suneil Beri", flag: "🇶🇦" },
-            "Switzerland": { employee: "Becca Capel", flag: "🇨🇭" },
-            "Brazil": { employee: "Karth Suthahar", flag: "🇧🇷" },
-            "Morocco": { employee: "Matthew Knight", flag: "🇲🇦" },
-            "Haiti": { employee: "Alex Robbins", flag: "🇭🇹" },
-            "Scotland": { employee: "Andrew Wood", flag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿" },
-            "USA": { employee: "Flora Barker", flag: "🇺🇸" },
-            "Paraguay": { employee: "Claire Bossiere", flag: "🇵🇾" },
-            "Australia": { employee: "Aimee Muddiman", flag: "🇦🇺" },
-            "Turkey": { employee: "Anouska Watts", flag: "🇹🇷" },
-            "Germany": { employee: "Gerry Batson", flag: "🇩🇪" },
-            "Curaçao": { employee: "Mike Lowe", flag: "🇨🇼" },
-            "Ivory Coast": { employee: "Daniel Sinclair", flag: "🇨🇮" },
-            "Netherlands": { employee: "Shaunak Ranade", flag: "🇳🇱" },
-            "Japan": { employee: "Vijay Sodhi", flag: "🇯🇵" },
-            "Tunisia": { employee: "Nick Warner", flag: "🇹🇳" },
-            "Belgium": { employee: "Ella Williams", flag: "🇧🇪" },
-            "Egypt": { employee: "Ellie Dawes", flag: "🇪🇬" },
-            "Iran": { employee: "Cara Brown", flag: "🇮🇷" },
-            "New Zealand": { employee: "Joe Curry", flag: "🇳🇿" },
-            "Cape Verde Islands": { employee: "Kavi Walia", flag: "🇨🇻" },
-            "Saudi Arabia": { employee: "Melekia McDonald", flag: "🇸🇦" },
-            "Uruguay": { employee: "Jenny Lyne", flag: "🇺🇾" },
-            "France": { employee: "Agnese D’Ubaldi", flag: "🇫🇷" },
-            "Senegal": { employee: "Aaron Beedie", flag: "🇸🇳" },
-            "Iraq": { employee: "Daniel Lachku", flag: "🇮🇶" },
-            "Norway": { employee: "Mick Aerts", flag: "🇳🇴" },
-            "Argentina": { employee: "Juliet Ingram", flag: "🇦🇷" },
-            "Algeria": { employee: "Sam Palmer", flag: "🇩🇿" },
-            "Jordan": { employee: "Autumn Moore", flag: "🇯🇴" },
-            "Portugal": { employee: "Matthew Harvey", flag: "🇵🇹" },
-            "Congo DR": { employee: "Hayden Shu", flag: "🇨🇩" },
-            "Uzbekistan": { employee: "Kudzu Dyirakumund", flag: "🇺🇿" },
-            "Colombia": { employee: "Bruno Gonta", flag: "🇨🇴" },
-            "Croatia": { employee: "Kial Kirlew", flag: "🇭🇷" },
-            "Ghana": { employee: "Mario Charalambous", flag: "🇬🇭" },
-            "Panama": { employee: "Harriett Sydall", flag: "🇵🇦" },
-            "England": { employee: "Paul Mayall", flag: "🏴󠁧󠁢󠁥󠁮阱󠁿" },
-            "Spain": { employee: "Alex Manley", flag: "🇪🇸" },
-            "Canada": { employee: "Ed Barney", flag: "🇨🇦" },
-            "Sweden": { employee: "Maxine Renning", flag: "🇸🇪" }
-        };
-
-        // --- ROBOT LIVE DATA INSERTION POINT ---
+        // --- START ROBOT LIVE DATA CONTAINER ---
         const matches = [
-        {
-                "id": 537327,
-                "stage": "GROUP_STAGE",
-                "home": "Mexico",
-                "away": "South Africa",
-                "homeScore": 2,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-11T19:00:00Z"
-        },
-        {
-                "id": 537328,
-                "stage": "GROUP_STAGE",
-                "home": "South Korea",
-                "away": "Czechia",
-                "homeScore": 2,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-12T02:00:00Z"
-        },
-        {
-                "id": 537333,
-                "stage": "GROUP_STAGE",
-                "home": "Canada",
-                "away": "Bosnia-Herzegovina",
-                "homeScore": 1,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-12T19:00:00Z"
-        },
-        {
-                "id": 537345,
-                "stage": "GROUP_STAGE",
-                "home": "USA",
-                "away": "Paraguay",
-                "homeScore": 4,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-13T01:00:00Z"
-        },
-        {
-                "id": 537334,
-                "stage": "GROUP_STAGE",
-                "home": "Qatar",
-                "away": "Switzerland",
-                "homeScore": 1,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-13T19:00:00Z"
-        },
-        {
-                "id": 537339,
-                "stage": "GROUP_STAGE",
-                "home": "Brazil",
-                "away": "Morocco",
-                "homeScore": 1,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-13T22:00:00Z"
-        },
-        {
-                "id": 537340,
-                "stage": "GROUP_STAGE",
-                "home": "Haiti",
-                "away": "Scotland",
-                "homeScore": 0,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-14T01:00:00Z"
-        },
-        {
-                "id": 537346,
-                "stage": "GROUP_STAGE",
-                "home": "Australia",
-                "away": "Turkey",
-                "homeScore": 2,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-14T04:00:00Z"
-        },
-        {
-                "id": 537351,
-                "stage": "GROUP_STAGE",
-                "home": "Germany",
-                "away": "Cura\u00e7ao",
-                "homeScore": 7,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-14T17:00:00Z"
-        },
-        {
-                "id": 537357,
-                "stage": "GROUP_STAGE",
-                "home": "Netherlands",
-                "away": "Japan",
-                "homeScore": 2,
-                "awayScore": 2,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-14T20:00:00Z"
-        },
-        {
-                "id": 537352,
-                "stage": "GROUP_STAGE",
-                "home": "Ivory Coast",
-                "away": "Ecuador",
-                "homeScore": 1,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-14T23:00:00Z"
-        },
-        {
-                "id": 537358,
-                "stage": "GROUP_STAGE",
-                "home": "Sweden",
-                "away": "Tunisia",
-                "homeScore": 5,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-15T02:00:00Z"
-        },
-        {
-                "id": 537369,
-                "stage": "GROUP_STAGE",
-                "home": "Spain",
-                "away": "Cape Verde Islands",
-                "homeScore": 0,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-15T16:00:00Z"
-        },
-        {
-                "id": 537363,
-                "stage": "GROUP_STAGE",
-                "home": "Belgium",
-                "away": "Egypt",
-                "homeScore": 1,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-15T19:00:00Z"
-        },
-        {
-                "id": 537370,
-                "stage": "GROUP_STAGE",
-                "home": "Saudi Arabia",
-                "away": "Uruguay",
-                "homeScore": 1,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-15T22:00:00Z"
-        },
-        {
-                "id": 537364,
-                "stage": "GROUP_STAGE",
-                "home": "Iran",
-                "away": "New Zealand",
-                "homeScore": 2,
-                "awayScore": 2,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-16T01:00:00Z"
-        },
-        {
-                "id": 537391,
-                "stage": "GROUP_STAGE",
-                "home": "France",
-                "away": "Senegal",
-                "homeScore": 3,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-16T19:00:00Z"
-        },
-        {
-                "id": 537392,
-                "stage": "GROUP_STAGE",
-                "home": "Iraq",
-                "away": "Norway",
-                "homeScore": 1,
-                "awayScore": 4,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-16T22:00:00Z"
-        },
-        {
-                "id": 537397,
-                "stage": "GROUP_STAGE",
-                "home": "Argentina",
-                "away": "Algeria",
-                "homeScore": 3,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-17T01:00:00Z"
-        },
-        {
-                "id": 537398,
-                "stage": "GROUP_STAGE",
-                "home": "Austria",
-                "away": "Jordan",
-                "homeScore": 3,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-17T04:00:00Z"
-        },
-        {
-                "id": 537403,
-                "stage": "GROUP_STAGE",
-                "home": "Portugal",
-                "away": "Congo DR",
-                "homeScore": 1,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-17T17:00:00Z"
-        },
-        {
-                "id": 537409,
-                "stage": "GROUP_STAGE",
-                "home": "England",
-                "away": "Croatia",
-                "homeScore": 4,
-                "awayScore": 2,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-17T20:00:00Z"
-        },
-        {
-                "id": 537410,
-                "stage": "GROUP_STAGE",
-                "home": "Ghana",
-                "away": "Panama",
-                "homeScore": 1,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-17T23:00:00Z"
-        },
-        {
-                "id": 537404,
-                "stage": "GROUP_STAGE",
-                "home": "Uzbekistan",
-                "away": "Colombia",
-                "homeScore": 1,
-                "awayScore": 3,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-18T02:00:00Z"
-        },
-        {
-                "id": 537329,
-                "stage": "GROUP_STAGE",
-                "home": "Czechia",
-                "away": "South Africa",
-                "homeScore": 1,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-18T16:00:00Z"
-        },
-        {
-                "id": 537335,
-                "stage": "GROUP_STAGE",
-                "home": "Switzerland",
-                "away": "Bosnia-Herzegovina",
-                "homeScore": 4,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-18T19:00:00Z"
-        },
-        {
-                "id": 537336,
-                "stage": "GROUP_STAGE",
-                "home": "Canada",
-                "away": "Qatar",
-                "homeScore": 6,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-18T22:00:00Z"
-        },
-        {
-                "id": 537330,
-                "stage": "GROUP_STAGE",
-                "home": "Mexico",
-                "away": "South Korea",
-                "homeScore": 1,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-19T01:00:00Z"
-        },
-        {
-                "id": 537348,
-                "stage": "GROUP_STAGE",
-                "home": "USA",
-                "away": "Australia",
-                "homeScore": 2,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-19T19:00:00Z"
-        },
-        {
-                "id": 537342,
-                "stage": "GROUP_STAGE",
-                "home": "Scotland",
-                "away": "Morocco",
-                "homeScore": 0,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-19T22:00:00Z"
-        },
-        {
-                "id": 537341,
-                "stage": "GROUP_STAGE",
-                "home": "Brazil",
-                "away": "Haiti",
-                "homeScore": 3,
-                "awayScore": 0,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-20T00:30:00Z"
-        },
-        {
-                "id": 537347,
-                "stage": "GROUP_STAGE",
-                "home": "Turkey",
-                "away": "Paraguay",
-                "homeScore": 0,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-20T03:00:00Z"
-        },
-        {
-                "id": 537359,
-                "stage": "GROUP_STAGE",
-                "home": "Netherlands",
-                "away": "Sweden",
-                "homeScore": 5,
-                "awayScore": 1,
-                "status": "FINISHED",
-                "time": "Completed",
-                "utcDate": "2026-06-20T17:00:00Z"
-        },
-        {
+            {
                 "id": 537353,
                 "stage": "GROUP_STAGE",
                 "home": "Germany",
@@ -752,19 +526,19 @@
                 "status": "FINISHED",
                 "time": "Completed",
                 "utcDate": "2026-06-20T20:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537354,
                 "stage": "GROUP_STAGE",
                 "home": "Ecuador",
-                "away": "Cura\u00e7ao",
+                "away": "Curaçao",
                 "homeScore": 0,
                 "awayScore": 0,
                 "status": "FINISHED",
                 "time": "Completed",
                 "utcDate": "2026-06-21T00:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537360,
                 "stage": "GROUP_STAGE",
                 "home": "Tunisia",
@@ -774,8 +548,8 @@
                 "status": "FINISHED",
                 "time": "Completed",
                 "utcDate": "2026-06-21T04:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537371,
                 "stage": "GROUP_STAGE",
                 "home": "Spain",
@@ -785,8 +559,8 @@
                 "status": "FINISHED",
                 "time": "Completed",
                 "utcDate": "2026-06-21T16:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537365,
                 "stage": "GROUP_STAGE",
                 "home": "Belgium",
@@ -796,8 +570,8 @@
                 "status": "FINISHED",
                 "time": "Completed",
                 "utcDate": "2026-06-21T19:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537372,
                 "stage": "GROUP_STAGE",
                 "home": "Uruguay",
@@ -807,8 +581,8 @@
                 "status": "FINISHED",
                 "time": "Completed",
                 "utcDate": "2026-06-21T22:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537366,
                 "stage": "GROUP_STAGE",
                 "home": "New Zealand",
@@ -818,8 +592,8 @@
                 "status": "FINISHED",
                 "time": "Completed",
                 "utcDate": "2026-06-22T01:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537399,
                 "stage": "GROUP_STAGE",
                 "home": "Argentina",
@@ -829,8 +603,8 @@
                 "status": "FINISHED",
                 "time": "Completed",
                 "utcDate": "2026-06-22T17:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537393,
                 "stage": "GROUP_STAGE",
                 "home": "France",
@@ -840,8 +614,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-22T21:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537394,
                 "stage": "GROUP_STAGE",
                 "home": "Norway",
@@ -851,8 +625,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-23T00:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537400,
                 "stage": "GROUP_STAGE",
                 "home": "Jordan",
@@ -862,8 +636,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-23T03:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537405,
                 "stage": "GROUP_STAGE",
                 "home": "Portugal",
@@ -873,8 +647,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-23T17:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537411,
                 "stage": "GROUP_STAGE",
                 "home": "England",
@@ -884,8 +658,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-23T20:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537412,
                 "stage": "GROUP_STAGE",
                 "home": "Panama",
@@ -895,8 +669,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-23T23:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537406,
                 "stage": "GROUP_STAGE",
                 "home": "Colombia",
@@ -906,8 +680,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-24T02:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537337,
                 "stage": "GROUP_STAGE",
                 "home": "Switzerland",
@@ -917,8 +691,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-24T19:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537338,
                 "stage": "GROUP_STAGE",
                 "home": "Bosnia-Herzegovina",
@@ -928,8 +702,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-24T19:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537344,
                 "stage": "GROUP_STAGE",
                 "home": "Morocco",
@@ -939,8 +713,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-24T22:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537343,
                 "stage": "GROUP_STAGE",
                 "home": "Scotland",
@@ -950,8 +724,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-24T22:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537331,
                 "stage": "GROUP_STAGE",
                 "home": "Czechia",
@@ -961,8 +735,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-25T01:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537332,
                 "stage": "GROUP_STAGE",
                 "home": "South Africa",
@@ -972,8 +746,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-25T01:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537355,
                 "stage": "GROUP_STAGE",
                 "home": "Ecuador",
@@ -983,19 +757,19 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-25T20:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537356,
                 "stage": "GROUP_STAGE",
-                "home": "Cura\u00e7ao",
+                "home": "Curaçao",
                 "away": "Ivory Coast",
                 "homeScore": 0,
                 "awayScore": 0,
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-25T20:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537361,
                 "stage": "GROUP_STAGE",
                 "home": "Tunisia",
@@ -1005,8 +779,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-25T23:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537362,
                 "stage": "GROUP_STAGE",
                 "home": "Japan",
@@ -1016,8 +790,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-25T23:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537349,
                 "stage": "GROUP_STAGE",
                 "home": "Turkey",
@@ -1027,8 +801,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-26T02:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537350,
                 "stage": "GROUP_STAGE",
                 "home": "Paraguay",
@@ -1038,8 +812,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-26T02:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537395,
                 "stage": "GROUP_STAGE",
                 "home": "Norway",
@@ -1049,8 +823,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-26T19:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537396,
                 "stage": "GROUP_STAGE",
                 "home": "Senegal",
@@ -1060,8 +834,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-26T19:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537373,
                 "stage": "GROUP_STAGE",
                 "home": "Uruguay",
@@ -1071,8 +845,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-27T00:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537374,
                 "stage": "GROUP_STAGE",
                 "home": "Cape Verde Islands",
@@ -1082,8 +856,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-27T00:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537367,
                 "stage": "GROUP_STAGE",
                 "home": "New Zealand",
@@ -1093,8 +867,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-27T03:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537368,
                 "stage": "GROUP_STAGE",
                 "home": "Egypt",
@@ -1104,8 +878,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-27T03:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537413,
                 "stage": "GROUP_STAGE",
                 "home": "Panama",
@@ -1115,8 +889,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-27T21:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537414,
                 "stage": "GROUP_STAGE",
                 "home": "Croatia",
@@ -1126,8 +900,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-27T21:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537407,
                 "stage": "GROUP_STAGE",
                 "home": "Colombia",
@@ -1137,8 +911,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-27T23:30:00Z"
-        },
-        {
+            },
+            {
                 "id": 537408,
                 "stage": "GROUP_STAGE",
                 "home": "Congo DR",
@@ -1148,8 +922,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-27T23:30:00Z"
-        },
-        {
+            },
+            {
                 "id": 537401,
                 "stage": "GROUP_STAGE",
                 "home": "Jordan",
@@ -1159,8 +933,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-28T02:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537402,
                 "stage": "GROUP_STAGE",
                 "home": "Algeria",
@@ -1170,8 +944,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-28T02:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537417,
                 "stage": "LAST_32",
                 "home": null,
@@ -1181,8 +955,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-28T19:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537423,
                 "stage": "LAST_32",
                 "home": null,
@@ -1192,8 +966,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-29T17:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537415,
                 "stage": "LAST_32",
                 "home": null,
@@ -1203,8 +977,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-29T20:30:00Z"
-        },
-        {
+            },
+            {
                 "id": 537418,
                 "stage": "LAST_32",
                 "home": null,
@@ -1214,8 +988,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-30T01:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537424,
                 "stage": "LAST_32",
                 "home": null,
@@ -1225,8 +999,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-30T17:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537416,
                 "stage": "LAST_32",
                 "home": null,
@@ -1236,8 +1010,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-06-30T21:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537425,
                 "stage": "LAST_32",
                 "home": null,
@@ -1247,8 +1021,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-07-01T01:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537426,
                 "stage": "LAST_32",
                 "home": null,
@@ -1258,8 +1032,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-07-01T16:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537422,
                 "stage": "LAST_32",
                 "home": null,
@@ -1269,8 +1043,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-07-01T20:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537421,
                 "stage": "LAST_32",
                 "home": null,
@@ -1280,8 +1054,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-07-02T00:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537420,
                 "stage": "LAST_32",
                 "home": null,
@@ -1291,8 +1065,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-07-02T19:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537419,
                 "stage": "LAST_32",
                 "home": null,
@@ -1302,8 +1076,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-07-02T23:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537429,
                 "stage": "LAST_32",
                 "home": null,
@@ -1313,8 +1087,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-07-03T03:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537428,
                 "stage": "LAST_32",
                 "home": null,
@@ -1324,8 +1098,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-07-03T18:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537427,
                 "stage": "LAST_32",
                 "home": null,
@@ -1335,8 +1109,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-07-03T22:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537430,
                 "stage": "LAST_32",
                 "home": null,
@@ -1346,8 +1120,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-07-04T01:30:00Z"
-        },
-        {
+            },
+            {
                 "id": 537376,
                 "stage": "LAST_16",
                 "home": null,
@@ -1357,8 +1131,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-07-04T17:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537375,
                 "stage": "LAST_16",
                 "home": null,
@@ -1368,8 +1142,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-07-04T21:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537377,
                 "stage": "LAST_16",
                 "home": null,
@@ -1379,8 +1153,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-07-05T20:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537378,
                 "stage": "LAST_16",
                 "home": null,
@@ -1390,8 +1164,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-07-06T00:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537379,
                 "stage": "LAST_16",
                 "home": null,
@@ -1401,8 +1175,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-07-06T19:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537380,
                 "stage": "LAST_16",
                 "home": null,
@@ -1412,8 +1186,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-07-07T00:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537381,
                 "stage": "LAST_16",
                 "home": null,
@@ -1423,8 +1197,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-07-07T16:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537382,
                 "stage": "LAST_16",
                 "home": null,
@@ -1434,8 +1208,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-07-07T20:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537383,
                 "stage": "QUARTER_FINALS",
                 "home": null,
@@ -1445,8 +1219,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-07-09T20:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537384,
                 "stage": "QUARTER_FINALS",
                 "home": null,
@@ -1456,8 +1230,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-07-10T19:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537385,
                 "stage": "QUARTER_FINALS",
                 "home": null,
@@ -1467,8 +1241,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-07-11T21:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537386,
                 "stage": "QUARTER_FINALS",
                 "home": null,
@@ -1478,8 +1252,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-07-12T01:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537387,
                 "stage": "SEMI_FINALS",
                 "home": null,
@@ -1489,8 +1263,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-07-14T19:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537388,
                 "stage": "SEMI_FINALS",
                 "home": null,
@@ -1500,8 +1274,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-07-15T19:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537389,
                 "stage": "THIRD_PLACE",
                 "home": null,
@@ -1511,8 +1285,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-07-18T21:00:00Z"
-        },
-        {
+            },
+            {
                 "id": 537390,
                 "stage": "FINAL",
                 "home": null,
@@ -1522,8 +1296,8 @@
                 "status": "UPCOMING",
                 "time": "Scheduled",
                 "utcDate": "2026-07-19T19:00:00Z"
-        }
-];
+            }
+        ];
         // --- END ROBOT LIVE DATA ---
 
         function makeTeamRow(teamName, score, isWinner, isLoser) {
@@ -1612,6 +1386,16 @@
             pastContainer.innerHTML = '';
             directoryContainer.innerHTML = '';
 
+            // --- SCAN AND INJECT DYNAMIC BROADCAST THEMING ---
+            const liveMatch = matches.find(m => m.status === 'LIVE');
+            if (liveMatch && teamColors[liveMatch.home] && teamColors[liveMatch.away]) {
+                const colorA = teamColors[liveMatch.home][0];
+                const colorB = teamColors[liveMatch.away][0];
+                document.body.style.background = `linear-gradient(135deg, ${colorA}dd 0%, #0f172a 50%, ${colorB}dd 100%)`;
+            } else {
+                document.body.style.background = 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)';
+            }
+
             const completedMatches = matches
                 .filter(m => m.status === 'FINISHED')
                 .sort((a, b) => new Date(b.utcDate || 0) - new Date(a.utcDate || 0));
@@ -1656,6 +1440,7 @@
             if (finalMatch && finalMatch.status === 'FINISHED') {
                 const champ = finalMatch.homeScore > finalMatch.awayScore ? finalMatch.home : finalMatch.away;
                 const champInfo = teamAssignments[champ] || { employee: "Someone!", flag: "🏆" };
+                document.getElementById('champion-banner').style.display = 'block';
                 document.getElementById('champion-name-target').innerHTML = `${getFlagHtml(champ)} ${champ} (${champInfo.employee})`;
             }
         }
