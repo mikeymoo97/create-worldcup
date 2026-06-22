@@ -2,9 +2,9 @@ name: Update World Cup Scores
 
 on:
   schedule:
-    # Runs exactly at the start of every hour (e.g., 12:00, 1:00, 2:00)
-    - cron: '0 * * * *'
-  workflow_dispatch: # Allows you to still trigger updates manually via the GitHub UI
+    # Restores your original working cron schedule
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
 
 jobs:
   update-scores:
@@ -17,23 +17,17 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
+          cache: 'pip'
 
       - name: Install dependencies
         run: |
-          pip install requests
+          pip install -r requirements.txt
 
       - name: Fetch Latest Scores
         env:
           FOOTBALL_DATA_API_KEY: ${{ secrets.FOOTBALL_DATA_API_KEY }}
         run: |
-          # This automatically locates fetch_scores.py anywhere in your repo and runs it
-          SCRIPT_PATH=$(find . -name "fetch_scores.py" -print -quit)
-          if [ -z "$SCRIPT_PATH" ]; then
-            echo "❌ ERROR: Could not find fetch_scores.py anywhere in the repository!"
-            exit 1
-          fi
-          echo "🚀 Found script at: $SCRIPT_PATH"
-          python "$SCRIPT_PATH"
+          python fetch_scores.py
 
       - name: Commit and Push Changes
         run: |
