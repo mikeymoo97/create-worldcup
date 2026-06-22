@@ -7,6 +7,8 @@ on:
 jobs:
   update-scores:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages # 🔥 Added: Tells GitHub explicitly where this deployment environment is targeted
     permissions:
       contents: write
       pages: write      
@@ -105,7 +107,7 @@ jobs:
           git push
 
       - name: 📦 Pack and Upload Web Artifact
-        uses: actions/upload-pages-artifact@v3 # 🔥 Added: Packages the repo folder so GitHub Pages has something to read
+        uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
 
