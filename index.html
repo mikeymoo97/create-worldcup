@@ -116,9 +116,7 @@
         .match-status { font-size: 0.65rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted); }
         .match-date-badge { font-size: 0.7rem; color: #1e293b; background: rgba(226, 232, 240, 0.6); padding: 1px 5px; border-radius: 4px; margin-top: 3px; display: inline-block; }
 
-        /* =========================================================
-           🎮 TOURNAMENT TREE BRACKET SECTION
-           ========================================================= */
+        /* Bracket Setup */
         .bracket-container { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 20px 10px; overflow-x: auto; position: relative; }
         .bracket-column { display: flex; flex-direction: column; justify-content: space-around; min-height: 680px; flex-shrink: 0; width: 230px; }
         
@@ -136,7 +134,6 @@
         .tree-team.winner .tree-score { background: #22c55e; color: white; }
         .tree-owner { font-size: 0.7rem; color: var(--text-muted); font-weight: 500; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 120px; }
 
-        /* Grand Champion Banner Box */
         .champion-box { background: linear-gradient(135deg, #fef08a 0%, #eab308 100%); border: 3px solid #ca8a04; text-align: center; border-radius: 16px; padding: 15px; animation: pulse-card 2s infinite linear; }
         .champion-title { font-size: 0.85rem; font-weight: 900; color: #854d0e; text-transform: uppercase; letter-spacing: 1px; }
         .champion-display { font-size: 1.4rem; font-weight: 900; color: #0f172a; margin-top: 5px; }
@@ -181,37 +178,31 @@
             <h2>⚽ Tournament Tree</h2>
             <div class="bracket-container">
                 
-                <!-- Round of 32 Column -->
                 <div class="bracket-column">
                     <div class="bracket-header">Round of 32</div>
                     <div id="r32-box" style="display:flex; flex-direction:column; gap:8px; justify-content:space-around; height:100%;"></div>
                 </div>
 
-                <!-- Round of 16 Column -->
                 <div class="bracket-column">
                     <div class="bracket-header">Round of 16</div>
                     <div id="r16-box" style="display:flex; flex-direction:column; gap:25px; justify-content:space-around; height:100%;"></div>
                 </div>
 
-                <!-- Quarter Finals Column -->
                 <div class="bracket-column">
                     <div class="bracket-header">Quarter Finals</div>
                     <div id="qf-box" style="display:flex; flex-direction:column; gap:65px; justify-content:space-around; height:100%;"></div>
                 </div>
 
-                <!-- Semi Finals Column -->
                 <div class="bracket-column">
                     <div class="bracket-header">Semi Finals</div>
                     <div id="sf-box" style="display:flex; flex-direction:column; gap:140px; justify-content:space-around; height:100%;"></div>
                 </div>
 
-                <!-- Finals Column -->
                 <div class="bracket-column">
                     <div class="bracket-header">World Cup Final</div>
                     <div id="f-box" style="display:flex; flex-direction:column; justify-content:center; height:100%;"></div>
                 </div>
 
-                <!-- Winner Section -->
                 <div class="bracket-column" style="justify-content: center;">
                     <div class="champion-box">
                         <div class="champion-title"><i class="fa-solid fa-crown"></i> World Champion</div>
@@ -273,12 +264,13 @@
             "Sweden": { employee: "Maxine Renning", flag: "🇸🇪" }
         };
 
-        // 2. AUTOMATIC MATCH ENGINE DATALINK
+        // --- ROBOT LIVE DATA INSERTION POINT ---
         const matches = [
             { id: 101, stage: "GROUP_STAGE", home: "England", away: "Germany", homeScore: 2, awayScore: 1, status: "FINISHED", time: "Completed", utcDate: "2026-06-15T18:00:00Z" },
             { id: 201, stage: "LAST_32", home: "Brazil", away: "France", homeScore: 2, awayScore: 2, status: "LIVE", time: "Live Match", utcDate: "2026-06-19T17:00:00Z" },
             { id: 202, stage: "LAST_32", home: "Mexico", away: "USA", homeScore: 1, awayScore: 2, status: "FINISHED", time: "Completed", utcDate: "2026-06-19T14:00:00Z" }
         ];
+        // --- END ROBOT LIVE DATA ---
 
         function makeTeamRow(teamName, score, isWinner, isLoser) {
             const info = teamAssignments[teamName] || { employee: "TBD", flag: "🏳️" };
@@ -348,7 +340,6 @@
             pastContainer.innerHTML = '';
             directoryContainer.innerHTML = '';
 
-            // NEW: Sort matches chronologically so the latest game dates hit the top
             const sortedMatches = [...matches].sort((a, b) => new Date(b.utcDate || 0) - new Date(a.utcDate || 0));
 
             sortedMatches.forEach(match => {
@@ -426,4 +417,3 @@
     </script>
 </body>
 </html>
-
