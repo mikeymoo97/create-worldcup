@@ -9,6 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pages: write      # 🔥 Required to force the live site to refresh
+      id-token: write
     steps:
       - name: 📂 Check out code
         uses: actions/checkout@v4
@@ -75,12 +77,17 @@ jobs:
           with open('index.html', 'r') as f:
               html = f.read()
 
-          # Perform the visual roster corrections inline inside index.html strings to keep updates synchronized
-          html = html.replace('\"Cape Verde\": { employee: \"Kavi Walia\"', '\"Cape Verde Islands\": { employee: \"Kavi Walia\"')
+          # Corrected replacement strings (no broken backslashes)
+          html = html.replace('\"Cape Verde\":', '\"Cape Verde Islands\":')
           html = html.replace('Anousla Watts', 'Anouska Watts')
           html = html.replace('Daniel Lack', 'Daniel Lachku')
           html = html.replace('Gery Batson', 'Gerry Batson')
           html = html.replace('Sunil Beri', 'Suneil Beri')
+          
+          # 🔥 Fixed Mike & David's assignments automatically via the script
+          html = html.replace('Mike Lowe\": { team: \"Curacao\"', 'Mike Lowe\": { team: \"Curaçao\"')
+          html = html.replace('David Tolu Graham\": { team: \"Bosnia\"', 'David Tolu Graham\": { team: \"Bosnia-Herzegovina\"')
+          
           html = html.replace('🎮 Tournament Tree Brackets (Knockout Phase)', '⚽ Tournament Tree')
 
           replacement = f'// --- ROBOT LIVE DATA INSERTION POINT ---\n        const matches = {json.dumps(formatted_matches, indent=8)};\n        // --- END ROBOT LIVE DATA ---'
@@ -92,10 +99,13 @@ jobs:
               f.write(new_html)
           "
 
-      - name: 🚀 Push Updates Live
+      - name: 🚀 Push Updates to Repo
         run: |
           git config --global user.name "CreateBot"
           git config --global user.email "bot@createadvertising.com"
           git add index.html
           git commit -m "⚽ World Cup Tracker Roster and Sorting Updates Applied!" || exit 0
           git push
+
+      - name: 🌐 Force GitHub Pages Re-Deployment
+        uses: actions/deploy-pages@v4    # 🔥 Forces the server to build the live site immediately!
