@@ -56,7 +56,6 @@ jobs:
               home_name = m['homeTeam'].get('name', '')
               away_name = m['awayTeam'].get('name', '')
               
-              # Map team names exactly to your local directory setup
               if home_name == 'United States': home_name = 'USA'
               if away_name == 'United States': away_name = 'USA'
               if home_name == 'Cape Verde': home_name = 'Cape Verde Islands'
@@ -77,14 +76,12 @@ jobs:
           with open('index.html', 'r') as f:
               html = f.read()
 
-          # Clean string updates
           html = html.replace('\"Cape Verde\":', '\"Cape Verde Islands\":')
           html = html.replace('Anousla Watts', 'Anouska Watts')
           html = html.replace('Daniel Lack', 'Daniel Lachku')
           html = html.replace('Gery Batson', 'Gerry Batson')
           html = html.replace('Sunil Beri', 'Suneil Beri')
           
-          # Inline fallback updates for Mike and David 
           html = html.replace('Mike Lowe\": { team: \"Curacao\"', 'Mike Lowe\": { team: \"Curaçao\"')
           html = html.replace('David Tolu Graham\": { team: \"Bosnia\"', 'David Tolu Graham\": { team: \"Bosnia-Herzegovina\"')
           
@@ -106,6 +103,11 @@ jobs:
           git add index.html
           git commit -m "⚽ World Cup Tracker Roster and Sorting Updates Applied!" || exit 0
           git push
+
+      - name: 📦 Pack and Upload Web Artifact
+        uses: actions/upload-pages-artifact@v3 # 🔥 Added: Packages the repo folder so GitHub Pages has something to read
+        with:
+          path: '.'
 
       - name: 🌐 Force GitHub Pages Re-Deployment
         uses: actions/deploy-pages@v4
