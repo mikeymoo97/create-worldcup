@@ -49,8 +49,8 @@ for match in data.get("matches", []):
     if away_score is None: away_score = 0
 
     # --- LIVE STATUS FIX ---
-    # Catch the API's specific live match terminology (IN_PLAY, PAUSED)
-    raw_status = match.get("status", "")
+    # Convert to string, force uppercase, and strip spaces to completely prevent matching bugs
+    raw_status = str(match.get("status", "")).upper().strip()
     
     if raw_status in ["IN_PLAY", "PAUSED", "LIVE"]:
         frontend_status = "LIVE"
@@ -87,7 +87,7 @@ try:
         split_end = html_content.split(end_marker)[1]
 
         # Format the JSON payload nicely to keep your template clean
-        new_data_string = f"\n        const matches = {json.dumps(matches_payload, indent=12)};\n        "
+        new_data_string = f"\n            const matches = {json.dumps(matches_payload, indent=12)};\n        "
         updated_html = split_start + start_marker + new_data_string + end_marker + split_end
 
         with open("index.html", "w", encoding="utf-8") as f:
