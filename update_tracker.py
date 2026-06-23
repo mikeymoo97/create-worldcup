@@ -5,7 +5,7 @@ import requests
 # 1. Fetch the raw live data from football-data.org
 API_URL = "https://api.football-data.org/v4/competitions/WC/matches"
 
-# Checks GitHub Secrets first. If testing locally, falls back to your token string automatically.
+# Checks GitHub Secrets first. If testing locally, falls back to your token string.
 API_KEY = os.environ.get("FOOTBALL_API_KEY", "15e1eb6c1240450daad57212958ac59a")
 HEADERS = {"X-Auth-Token": API_KEY}
 
@@ -20,26 +20,57 @@ if response.status_code != 200:
 data = response.json()
 matches_payload = []
 
+# --- TEAM NAME TRANSLATIONS ---
+# Maps official API names to your exact frontend names
+TEAM_TRANSLATIONS = {
+    "Bosnia and Herzegovina": "Bosnia-Herzegovina",
+    "Curacao": "Curaçao",
+    "United States": "USA",
+    "Korea Republic": "South Korea",
+    "Czech Republic": "Czechia",
+    "Cape Verde": "Cape Verde Islands",
+    "Democratic Republic of the Congo": "Congo DR",
+    "Iran (Islamic Republic of)": "Iran"
+}
+
 # 2. Map the API payload exactly to your high-energy frontend format
 for match in data.get("matches", []):
-    home_name = match.get("homeTeam", {}).get("name", "TBD") if match.get("homeTeam") else "TBD"
-    away_name = match.get("awayTeam", {}).get("name", "TBD") if match.get("awayTeam") else "TBD"
+    raw_home = match.get("homeTeam", {}).get("name", "TBD") if match.get("homeTeam") else "TBD"
+    raw_away = match.get("awayTeam", {}).get("name", "TBD") if match.get("awayTeam") else "TBD"
 
-    # API returns None for scores if the match hasn't started, default to 0
+    # Apply the translation if the team is in our dictionary, otherwise keep the raw name
+    home_name = TEAM_TRANSLATIONS.get(raw_home, raw_home)
+    away_name = TEAM_TRANSLATIONS.get(raw_away, raw_away)
+
+    # Safely extract scores 
     home_score = match.get("score", {}).get("fullTime", {}).get("home")
     away_score = match.get("score", {}).get("fullTime", {}).get("away")
     if home_score is None: home_score = 0
     if away_score is None: away_score = 0
 
+    # --- LIVE STATUS FIX ---
+    # Catch the API's specific live match terminology (IN_PLAY, PAUSED)
+    raw_status = match.get("status", "")
+    
+    if raw_status in ["IN_PLAY", "PAUSED", "LIVE"]:
+        frontend_status = "LIVE"
+        frontend_time = "Live Match"
+    elif raw_status in ["FINISHED", "AWARDED"]:
+        frontend_status = "FINISHED"
+        frontend_time = "Completed"
+    else:
+        frontend_status = "TIMED"
+        frontend_time = "Scheduled"
+
     matches_payload.append({
         "id": match.get("id"),
-        "stage": match.get("stage"),       # Matches 'LAST_32', 'ROUND_OF_16', 'QUARTER_FINALS', etc.
+        "stage": match.get("stage"),
         "home": home_name,
         "away": away_name,
         "homeScore": home_score,
         "awayScore": away_score,
-        "status": match.get("status"),     # Matches 'FINISHED', 'LIVE', 'TIMED'
-        "time": "Live Match" if match.get("status") == "LIVE" else "Scheduled" if match.get("status") == "TIMED" else "Completed",
+        "status": frontend_status,
+        "time": frontend_time,
         "utcDate": match.get("utcDate")
     })
 
